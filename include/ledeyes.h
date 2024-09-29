@@ -24,17 +24,24 @@ private:
     int eyes_blink_delay_ms = 10;           // 眨眼睛task CRGB值刷新的间隔时间
 
     // 内部标志变量
-    bool flag_eyes_blink = true; // 眨眼睛标志位
+    bool flag_eyes_blink = true;         // 眨眼睛标志位
+    bool flag_eyes_bri_gradient = false; // 眼睛颜色渐变标志位
+
+    static void taskEyesBlink(void *pvParameters); // task create 静态成员函数
+    void taskEyesBlinkImpl();                      // 实际的眨眼睛任务实现
+
+    void ledsBriGradientImpl(CRGB leds[NUM_LEDS], CRGB color); // LED上下亮度渐变
 
 public:
-    LedEyes();                                                 // 构造函数
-    ~LedEyes();                                                // 析构函数
-    void init();                                               // 初始化LED
-    void update();                                             // 更新所有LED的CRGB值到WS2812
-    void setLeds2SingleColor(CRGB leds[NUM_LEDS], CRGB color); // 设置LED为单一颜色
-    static void taskEyesBlink(void *pvParameters);             // task create 静态成员函数
-    void taskEyesBlinkImpl();                                  // 实际的眨眼睛任务实现
+    LedEyes();  // 构造函数
+    ~LedEyes(); // 析构函数
+
+    void init();                          // 初始化LED
+    void update();                        // 更新所有LED的CRGB值到WS2812
+    void setLeds2SingleColor(CRGB color); // 设置LED为单一颜色
+
     void enableEyesBlink(bool flag);
+    void enableEyesBriGradient(bool flag);
 };
 
 #endif // LEDEYE_H
