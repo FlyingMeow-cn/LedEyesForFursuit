@@ -13,11 +13,6 @@ LedEyes::LedEyes()
         leds_colortrans_r[i] = CRGB::Black;
         leds_britrans_l[i] = CRGB::Black;
         leds_britrans_r[i] = CRGB::Black;
-        // 123123
-        // 123123
-        // 123123
-        // 123123
-        // 123123
     }
 
     FastLED.addLeds<WS2812B, LED_L_PIN, GRB>(leds_l, NUM_LEDS);
