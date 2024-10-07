@@ -6,20 +6,8 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif // 判断蓝牙是否启用
 
-// CRGB leds_l[NUM_LEDS];
-// CRGB leds_r[NUM_LEDS];
-// CRGB color24_1 = CRGB(50, 149, 183); // 湖蓝色
-
 BluetoothSerial SerialBT;
-
-// void setLed2SingleColor(CRGB leds[NUM_LEDS], CRGB color); // 设置LED为单一颜色
-void taskEyesBlink(void *pvParameters); // 眨眼睛任务 传入参数为LedEyes对象
-// void taskBleMsgHdl(void *pvParameters);                   // 蓝牙消息处理任务
 void bleMsgHandler(); // 蓝牙消息处理函数
-// void setTimerMs(void *pvParameters);
-// void task1(void *pvParameters);
-// void task2(void *pvParameters);
-// void setLedBrightness();                                  // 设置LED亮度
 
 LedEyes ledEyes;
 
@@ -31,108 +19,17 @@ void setup()
 
     ledEyes.init();
 
-    // xTaskCreate(setTimerMs, "setTimerMs", 1024, NULL, 1, NULL);
-    // xTaskCreate(task1, "task1", 1024, NULL, 1, NULL);
-    // xTaskCreate(task2, "task2", 1024, NULL, 2, NULL);
+    xTaskCreate(taskEyesBlink, "taskEyesBlink", 1024, &ledEyes, 2, NULL);
+    xTaskCreate(taskEyesUpdate, "taskEyesUpdate", 1024, &ledEyes, 1, NULL);
 
-    xTaskCreate(taskEyesBlink, "taskEyesBlink", 1024, NULL, 1, NULL);
-
-    // xTaskCreate(taskBleMsgHdl, "taskBleMsgHdl", 1024, NULL, 1, NULL);
 }
 
 void loop()
 {
     bleMsgHandler();
-    ledEyes.update();
-
-    // Serial.println(ledEyes.timer_ms);
-
-    // FastLED.show();
     delay(100);
 }
 
-void taskEyesBlink(void *pvParameters)
-{
-    while (1)
-    {
-        if (ledEyes.flag_eyes_blink)
-        {
-            // 闭眼睛
-            for (int i = 0; i < NUM_LEDS / 2; i++)
-            {
-                for (int led_index = 0; led_index < NUM_LEDS; led_index++)
-                {
-                    if (led_index < i || led_index >= NUM_LEDS - i)
-                    {
-                        ledEyes.leds_l[led_index] = CRGB::Black;
-                        ledEyes.leds_r[led_index] = CRGB::Black;
-                    }
-                    else
-                    {
-                        ledEyes.leds_l[led_index] = ledEyes.leds_britrans_l[led_index];
-                        ledEyes.leds_r[led_index] = ledEyes.leds_britrans_r[led_index];
-                    }
-                }
-                FastLED.show();
-                vTaskDelay(ledEyes.eyes_blink_delay_ms / portTICK_PERIOD_MS);
-            }
-
-            // 睁眼睛
-            for (int i = NUM_LEDS / 2 - 1; i >= 0; i--)
-            {
-                for (int led_index = 0; led_index < NUM_LEDS; led_index++)
-                {
-                    if (led_index < i || led_index >= NUM_LEDS - i)
-                    {
-                        ledEyes.leds_l[led_index] = CRGB::Black;
-                        ledEyes.leds_r[led_index] = CRGB::Black;
-                    }
-                    else
-                    {
-                        ledEyes.leds_l[led_index] = ledEyes.leds_britrans_l[led_index];
-                        ledEyes.leds_r[led_index] = ledEyes.leds_britrans_r[led_index];
-                    }
-                }
-                FastLED.show();
-                vTaskDelay(ledEyes.eyes_blink_delay_ms / portTICK_PERIOD_MS);
-            }
-            // Serial.println("task Eyes Blink");
-            vTaskDelay(ledEyes.eyes_blink_palse_ms / portTICK_PERIOD_MS);
-        }
-        else
-        {
-            FastLED.show();
-            vTaskDelay(ledEyes.eyes_blink_palse_ms / portTICK_PERIOD_MS);
-        }
-    }
-}
-
-// void setTimerMs(void *pvParameters)
-// {
-//     while (1)
-//     {
-//         ledEyes.timer_ms++;
-//         vTaskDelay(1 / portTICK_PERIOD_MS);
-//     }
-// }
-
-// void task1(void *pvParameters)
-// {
-//     while (1)
-//     {
-//         Serial.println("task1");
-//         vTaskDelay(1000 / portTICK_PERIOD_MS);
-//     }
-// }
-
-// void task2(void *pvParameters)
-// {
-//     while (1)
-//     {
-//         Serial.println("task2");
-//         vTaskDelay(500 / portTICK_PERIOD_MS);
-//     }
-// }
 
 void bleMsgHandler()
 {
@@ -152,9 +49,7 @@ void bleMsgHandler()
     // rst 重置
     if (incoming_string == "rst")
     {
-        ledEyes.eyes_blink_palse_ms = 5000;
-        ledEyes.eyes_blink_delay_ms = 10;
-        ledEyes.led_brightness = 0.2;
+        ledEyes.init();
 
         String rstmsg = "发送 bp + 整数 以调整眨眼间隔时间\n";
         rstmsg += "发送 bd + 整数 以调整眨眼延时时间\n";
@@ -227,13 +122,50 @@ void bleMsgHandler()
             return;
         }
     }
+
+    // 修改是否眨眼标志  "blk on" "blk off"
+    String prefix_blinkflag = "blk ";
+    if (incoming_string.startsWith(prefix_blinkflag))
+    {
+        String flag = incoming_string.substring(prefix_blinkflag.length());
+        if (flag == "on")
+        {
+            ledEyes.flag_eyes_blink = true;
+            SerialBT.println("眨眼标志位开启");
+        }
+        else if (flag == "off")
+        {
+            ledEyes.flag_eyes_blink = false;
+            SerialBT.println("眨眼标志位关闭");
+        }
+        else
+        {
+            SerialBT.println("发送 blk on 或 blk off 以开启或关闭眨眼标志位");
+            return;
+        }
+    }
+
+    // 修改是否颜色渐变标志  "brig on" "brig off"
+    String prefix_brigflag = "brig ";
+    if (incoming_string.startsWith(prefix_brigflag))
+    {
+        String flag = incoming_string.substring(prefix_brigflag.length());
+        if (flag == "on")
+        {
+            ledEyes.flag_eyes_bri_gradient = true;
+            SerialBT.println("颜色渐变标志位开启");
+        }
+        else if (flag == "off")
+        {
+            ledEyes.flag_eyes_bri_gradient = false;
+            SerialBT.println("颜色渐变标志位关闭");
+        }
+        else
+        {
+            SerialBT.println("发送 brig on 或 brig off 以开启或关闭颜色渐变标志位");
+            return;
+        }
+    }
+    
 }
 
-// void setLedBrightness()
-// {
-//     CRGB color = led_CRGBcolor_current;
-//     uint8_t red = color.r * led_brightness;   // 获取红色分量
-//     uint8_t green = color.g * led_brightness; // 获取绿色分量
-//     uint8_t blue = color.b * led_brightness;  // 获取蓝色分量
-//     led_CRGB_current = CRGB(red, green, blue);
-// }
