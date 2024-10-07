@@ -33,8 +33,6 @@ public:
     CRGB leds_colortrans_r[NUM_LEDS]; // 颜色变换后的CRGB值
     CRGB leds_britrans_l[NUM_LEDS];   // 亮度变换后的CRGB值
     CRGB leds_britrans_r[NUM_LEDS];   // 亮度变换后的CRGB值
-    CRGB leds_blink_l[NUM_LEDS];      // 眨眼睛效果的CRGB值
-    CRGB leds_blink_r[NUM_LEDS];      // 眨眼睛效果的CRGB值
     CRGB leds_l[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
     CRGB leds_r[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
 
