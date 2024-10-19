@@ -19,6 +19,7 @@ void setup()
 
     ledEyes.init();
 
+    xTaskCreate(taskLedsColorTrans, "ledsColorTrans", 1024, &ledEyes, 3, NULL);
     xTaskCreate(taskEyesBlink, "taskEyesBlink", 1024, &ledEyes, 2, NULL);
     xTaskCreate(taskEyesUpdate, "taskEyesUpdate", 1024, &ledEyes, 1, NULL);
 
@@ -166,6 +167,9 @@ void bleMsgHandler()
             return;
         }
     }
+
+    // 修改眼睛颜色:
+    // 
     
 }
 
