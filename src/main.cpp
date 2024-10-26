@@ -8,6 +8,8 @@
 
 BluetoothSerial SerialBT;
 void bleMsgHandler(); // 蓝牙消息处理函数
+void helpMsgSetup();  // 帮助信息设置
+String helpmsg = "";
 
 LedEyes ledEyes;
 
@@ -17,11 +19,12 @@ void setup()
     SerialBT.begin("ESP32_飞喵的发光眼设备"); // 启动蓝牙串口并设置蓝牙的名称
     Serial.begin(115200);
 
+    helpMsgSetup();
     ledEyes.init();
 
+    xTaskCreate(taskLedsColorTrans, "ledsColorTrans", 1024, &ledEyes, 3, NULL);
     xTaskCreate(taskEyesBlink, "taskEyesBlink", 1024, &ledEyes, 2, NULL);
     xTaskCreate(taskEyesUpdate, "taskEyesUpdate", 1024, &ledEyes, 1, NULL);
-
 }
 
 void loop()
@@ -30,6 +33,17 @@ void loop()
     delay(100);
 }
 
+void helpMsgSetup()
+{
+    helpmsg = "发送 rst 重置\n";
+    helpmsg += "发送 bp + 整数 以调整眨眼间隔时间\n";
+    helpmsg += "发送 bd + 整数 以调整眨眼延时时间\n";
+    helpmsg += "发送 bri + 0~100之间整数 以调整眨眼亮度\n";
+    helpmsg += "发送 blk on/off 以开启/关闭眨眼\n";
+    helpmsg += "发送 brig on/off 以开启/关闭颜色渐变\n";
+    helpmsg += "发送 ct on/off 以开启/关闭颜色变化效果\n";
+    helpmsg += "发送 cts + 整数 以调整颜色变化速度\n";
+}
 
 void bleMsgHandler()
 {
@@ -46,16 +60,18 @@ void bleMsgHandler()
         return;
     }
 
+    // help 帮助
+    if (incoming_string == "help")
+    {
+        SerialBT.println(helpmsg);
+    }
+
     // rst 重置
     if (incoming_string == "rst")
     {
         ledEyes.init();
-
-        String rstmsg = "发送 bp + 整数 以调整眨眼间隔时间\n";
-        rstmsg += "发送 bd + 整数 以调整眨眼延时时间\n";
-        rstmsg += "发送 bri + 0~100之间整数 以调整眨眼亮度";
-
-        SerialBT.println(rstmsg);
+        SerialBT.println("重置设置");
+        SerialBT.println(helpmsg);
     }
 
     // 修改眨眼间隔时间
@@ -72,7 +88,7 @@ void bleMsgHandler()
         }
         else
         {
-            SerialBT.println("发送 bp + 整数 以调整眨眼间隔时间  " + numberPart);
+            SerialBT.println("发送 bp + 正整数 以调整眨眼间隔时间  " + numberPart);
             return;
         }
     }
@@ -91,7 +107,7 @@ void bleMsgHandler()
         }
         else
         {
-            SerialBT.println("发送 bd + 整数 以调整眨眼延时时间  " + numberPart);
+            SerialBT.println("发送 bd + 正整数 以调整眨眼延时时间  " + numberPart);
             return;
         }
     }
@@ -166,6 +182,48 @@ void bleMsgHandler()
             return;
         }
     }
-    
-}
 
+    // 修改眼睛颜色:
+    //
+
+    // 修改是否颜色变换标志  "ct on" "ct off"
+    String prefix_ctflag = "ct ";
+    if (incoming_string.startsWith(prefix_ctflag))
+    {
+        String flag = incoming_string.substring(prefix_ctflag.length());
+        if (flag == "on")
+        {
+            ledEyes.flag_eyes_colortrans = true;
+            SerialBT.println("颜色变换标志位开启");
+        }
+        else if (flag == "off")
+        {
+            ledEyes.flag_eyes_colortrans = false;
+            SerialBT.println("颜色变换标志位关闭");
+        }
+        else
+        {
+            SerialBT.println("发送 ct on 或 ct off 以开启或关闭颜色变换标志位");
+            return;
+        }
+    }
+
+    // 修改颜色变换速度
+    String prefix_ctspeed = "cts ";
+    if (incoming_string.startsWith(prefix_ctspeed))
+    {
+        String numberPart = incoming_string.substring(prefix_ctspeed.length());
+        // 判断是否为数字
+        if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
+        {
+            int value = numberPart.toInt();
+            ledEyes.colorTransSpeed = value;
+            SerialBT.println("修改颜色变换速度为：" + String(ledEyes.colorTransSpeed));
+        }
+        else
+        {
+            SerialBT.println("发送 cts + 正整数 以调整颜色变化速度  " + numberPart);
+            return;
+        }
+    }
+}
