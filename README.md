@@ -11,19 +11,13 @@
 
 `2024-10-19 20:18` 整理程序思路：
 
+`2024-10-26 21:37` 整理程序思路：
+
+**LED颜色显示逻辑：**
+
+![image-20241026213716994](https://gitee.com/FlyingMeow/mypic/raw/master/image-20241026213716994.png)
 
 
-**LED颜色显示逻辑：**  （后续使用流程图整理）
-
-初始颜色 `leds_color_l`、`leds_color_r`
-↓ 色彩变换
-色彩变换后的颜色 `leds_colortrans_l`、`leds_colortrans_r`
-↓ 亮度变换
-亮度变换后的颜色 `leds_britrans_l`、`leds_britrans_r`
-↓ 眨眼睛赋值操作
-LED直接显示的颜色 `leds_l`、`leds_r`
-↓
-FastLED.show()刷新
 
 
 
@@ -43,25 +37,3 @@ FastLED.show()刷新
 
 
 
-
-
-
-
-
-
-
-
-
-
-
----
-
-~~LED颜色显示逻辑~~
-
-1. ~~初始CRGB颜色 led_CRGBcolor_current~~
-   1. ~~初始颜色时变（初始颜色变换）彩虹效果；~~
-   2. ~~加效果（可选）  ；~~
-2. ~~亮度调整~~
-   1. ~~上亮下暗渐变【已完成】~~
-   1. ~~亮度时变效果~~
-3. ~~眨眼睛效果【已完成】~~
