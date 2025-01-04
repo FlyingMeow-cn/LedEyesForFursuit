@@ -44,8 +44,8 @@ void LedEyes::init()
     flag_eyes_bri_gradient = true;
     // flag_eyes_bri_gradient = false;
 
-    flag_eyes_colortrans = true;
-    // flag_eyes_colortrans = false;
+    // flag_eyes_colortrans = true;
+    flag_eyes_colortrans = false;
 
     // for (int i = 0; i < NUM_LEDS; i++)
     // {
