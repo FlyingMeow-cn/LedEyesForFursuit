@@ -184,7 +184,35 @@ void bleMsgHandler()
     }
 
     // 修改眼睛颜色:
-    //
+    // 命令“clr r g b” 以设置眼睛颜色
+    // 命令“clr rst” 以重置眼睛颜色
+    // 命令“clr show” 以显示眼睛颜色
+    String prefix_clr = "clr ";
+    if (incoming_string.startsWith(prefix_clr))
+    {
+        String colorPart = incoming_string.substring(prefix_clr.length());
+        if (colorPart == "rst")
+        {
+            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.led_CRGBcolor_init);
+            SerialBT.println("重置眼睛颜色");
+        }
+        else if (colorPart == "show")
+        {
+            int Rl = ledEyes.leds_color_l[0].r;
+            // SerialBT.println("当前眼睛颜色为：" + String(ledEyes.led_CRGBcolor_init.r) + " " + String(ledEyes.led_CRGBcolor_init.g) + " " + String(ledEyes.led_CRGBcolor_init.b));
+        }
+        else
+        {
+            int r, g, b;
+            int space1 = colorPart.indexOf(" ");
+            int space2 = colorPart.lastIndexOf(" ");
+            r = colorPart.substring(0, space1).toInt();
+            g = colorPart.substring(space1 + 1, space2).toInt();
+            b = colorPart.substring(space2 + 1).toInt();
+            ledEyes.led_CRGBcolor_init = CRGB(r, g, b);
+            SerialBT.println("设置眼睛颜色为：" + String(r) + " " + String(g) + " " + String(b));
+        }
+    }
 
     // 修改是否颜色变换标志  "ct on" "ct off"
     String prefix_ctflag = "ct ";
