@@ -3,10 +3,10 @@
 
 #define NUM_LEDS 20
 
-// #define LED_L_PIN 2
-// #define LED_R_PIN 4
-#define LED_L_PIN 16
-#define LED_R_PIN 17
+#define LED_L_PIN 2
+#define LED_R_PIN 4
+// #define LED_L_PIN 16
+// #define LED_R_PIN 17
 
 #include <Arduino.h>
 #include <FastLED.h>
@@ -62,7 +62,7 @@ public:
 
     bool flag_eyes_bri_gradient = true; // 眼睛颜色渐变标志位
 
-    bool flag_eyes_colortrans = true; // 眼睛颜色变换标志位
+    bool flag_eyes_colortrans = false; // 眼睛颜色变换标志位
     int colorTransSpeed = LED_COLORTRANS_SPEED_INIT;          // 颜色变换速度
 
     LedEyes();  // 构造函数
