@@ -6,16 +6,16 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif // 判断蓝牙是否启用
 #include "ble_msg_hdl.h"
+#include "device_ctrl.h"
 
 BluetoothSerial SerialBT;
 LedEyes ledEyes;
-String helpmsg = "";
+String ble_helpmsg = "";
 
-// void bleMsgHandler(); // 蓝牙消息处理函数
-// void helpMsgSetup();  // 帮助信息设置
 
 void setup()
 {
+    deviceSetup();
 
     SerialBT.begin("ESP32_飞喵的发光眼设备"); // 启动蓝牙串口并设置蓝牙的名称
     Serial.begin(9600);
