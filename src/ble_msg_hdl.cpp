@@ -221,6 +221,30 @@ void bleMsgHandler()
             return;
         }
     }
+
+    // 控制风扇开关 "fan on" "fan off"
+    String prefix_fan = "fan ";
+    if (incoming_string.startsWith(prefix_fan))
+    {
+        String flag = incoming_string.substring(prefix_fan.length());
+        if (flag == "on")
+        {
+            funEnable();
+            SerialBT.println("风扇开启");
+        }
+        else if (flag == "off")
+        {
+            funDisable();
+            SerialBT.println("风扇关闭");
+        }
+        else
+        {
+            SerialBT.println("发送 fan on 或 fan off 以开启或关闭风扇");
+            return;
+        }
+    }
+    
+
 }
 
 

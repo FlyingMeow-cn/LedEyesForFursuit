@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "BluetoothSerial.h"
 #include "ledeyes.h"
+#include "device_ctrl.h"
 
 extern BluetoothSerial SerialBT;
 extern LedEyes ledEyes;
