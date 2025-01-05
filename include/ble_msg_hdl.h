@@ -7,7 +7,7 @@
 
 extern BluetoothSerial SerialBT;
 extern LedEyes ledEyes;
-extern String helpmsg;
+extern String ble_helpmsg;
 
 void bleMsgHandler(); // 蓝牙消息处理函数
 void helpMsgSetup();  // 帮助信息设置

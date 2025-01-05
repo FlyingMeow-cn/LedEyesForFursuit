@@ -2,14 +2,14 @@
 
 void helpMsgSetup()
 {
-    helpmsg = "发送 rst 重置\n";
-    helpmsg += "发送 bp + 整数 以调整眨眼间隔时间\n";
-    helpmsg += "发送 bd + 整数 以调整眨眼延时时间\n";
-    helpmsg += "发送 bri + 0~100之间整数 以调整眨眼亮度\n";
-    helpmsg += "发送 blk on/off 以开启/关闭眨眼\n";
-    helpmsg += "发送 brig on/off 以开启/关闭颜色渐变\n";
-    helpmsg += "发送 ct on/off 以开启/关闭颜色变化效果\n";
-    helpmsg += "发送 cts + 整数 以调整颜色变化速度\n";
+    ble_helpmsg = "发送 rst 重置\n";
+    ble_helpmsg += "发送 bp + 整数 以调整眨眼间隔时间\n";
+    ble_helpmsg += "发送 bd + 整数 以调整眨眼延时时间\n";
+    ble_helpmsg += "发送 bri + 0~100之间整数 以调整眨眼亮度\n";
+    ble_helpmsg += "发送 blk on/off 以开启/关闭眨眼\n";
+    ble_helpmsg += "发送 brig on/off 以开启/关闭颜色渐变\n";
+    ble_helpmsg += "发送 ct on/off 以开启/关闭颜色变化效果\n";
+    ble_helpmsg += "发送 cts + 整数 以调整颜色变化速度\n";
 }
 
 void bleMsgHandler()
@@ -30,7 +30,7 @@ void bleMsgHandler()
     // help 帮助
     if (incoming_string == "help")
     {
-        SerialBT.println(helpmsg);
+        SerialBT.println(ble_helpmsg);
     }
 
     // rst 重置
@@ -38,7 +38,7 @@ void bleMsgHandler()
     {
         ledEyes.init();
         SerialBT.println("重置设置");
-        SerialBT.println(helpmsg);
+        SerialBT.println(ble_helpmsg);
     }
 
     // 修改眨眼间隔时间
