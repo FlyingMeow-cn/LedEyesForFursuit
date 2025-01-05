@@ -23,8 +23,8 @@ class LedEyes
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    // const float LED_BRIGNTNESS_INIT = 0.2;     // 0.0~1.0
-    const float LED_BRIGNTNESS_INIT = 0.5;      // 0.0~1.0
+    const float LED_BRIGNTNESS_INIT = 0.1;     // 0.0~1.0  // 调试用
+    // const float LED_BRIGNTNESS_INIT = 0.5;      // 0.0~1.0
     const CRGB color24_1 = CRGB(50, 149, 183);  // 湖蓝色
     const CRGB color24_2 = CRGB(255, 0, 0);     // 红色 不好看
     const CRGB color24_3 = CRGB(0, 255, 0);     // 绿色 不好看
@@ -57,7 +57,7 @@ public:
     float led_brightness = LED_BRIGNTNESS_INIT; // 当前亮度0.0~1.0
 
     int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
-    int eyes_blink_delay_ms = 10;   // 眨眼睛task CRGB值刷新的间隔时间
+    int eyes_blink_delay_ms = 20;   // 眨眼睛task CRGB值刷新的间隔时间
     bool flag_eyes_blink = true;    // 眨眼睛标志位
 
     bool flag_eyes_bri_gradient = true; // 眼睛颜色渐变标志位

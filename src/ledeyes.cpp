@@ -199,7 +199,7 @@ void taskEyesUpdate(void *pvParameters)
     while (1)
     {
         ledEyes.update();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(200 / portTICK_PERIOD_MS);
     }
 }
 
