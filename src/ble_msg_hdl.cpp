@@ -165,8 +165,8 @@ void bleMsgHandler()
         }
         else if (colorPart == "show")
         {
-            int Rl = ledEyes.leds_color_l[0].r;
-            // SerialBT.println("当前眼睛颜色为：" + String(ledEyes.led_CRGBcolor_init.r) + " " + String(ledEyes.led_CRGBcolor_init.g) + " " + String(ledEyes.led_CRGBcolor_init.b));
+            // int Rl = ledEyes.leds_color_l[0].r;
+            SerialBT.println("当前眼睛颜色为：" + String(ledEyes.led_CRGBcolor_init.r) + " " + String(ledEyes.led_CRGBcolor_init.g) + " " + String(ledEyes.led_CRGBcolor_init.b));
         }
         else
         {
@@ -176,8 +176,8 @@ void bleMsgHandler()
             r = colorPart.substring(0, space1).toInt();
             g = colorPart.substring(space1 + 1, space2).toInt();
             b = colorPart.substring(space2 + 1).toInt();
-            ledEyes.led_CRGBcolor_init = CRGB(r, g, b);
-            SerialBT.println("设置眼睛颜色为：" + String(r) + " " + String(g) + " " + String(b));
+            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, CRGB(r, g, b));
+            SerialBT.println("设置眼睛颜色RGB为：" + String(r) + " " + String(g) + " " + String(b));
         }
     }
 
