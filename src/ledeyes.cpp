@@ -35,7 +35,7 @@ LedEyes::~LedEyes()
 /// @todo
 void LedEyes::init()
 {
-    led_brightness = LED_BRIGNTNESS_INIT;
+    led_brightness = LED_BRIGHTNESS_INIT;
     colorTransSpeed = LED_COLORTRANS_SPEED_INIT;
 
     flag_eyes_blink = true;
