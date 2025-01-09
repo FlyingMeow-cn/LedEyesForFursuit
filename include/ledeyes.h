@@ -23,8 +23,8 @@ class LedEyes
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    const float LED_BRIGNTNESS_INIT = 0.1;     // 0.0~1.0  // 调试用
-    // const float LED_BRIGNTNESS_INIT = 0.5;      // 0.0~1.0
+    // const float LED_BRIGHTNESS_INIT = 0.1;     // 0.0~1.0  // 调试用
+    const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
     const CRGB color24_1 = CRGB(50, 149, 183);  // 湖蓝色
     const CRGB color24_2 = CRGB(255, 0, 0);     // 红色 不好看
     const CRGB color24_3 = CRGB(0, 255, 0);     // 绿色 不好看
@@ -54,7 +54,7 @@ public:
     CRGB leds_r[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
 
     CRGB led_CRGBcolor_init = color24_1;        // 初始颜色的RGB值
-    float led_brightness = LED_BRIGNTNESS_INIT; // 当前亮度0.0~1.0
+    float led_brightness = LED_BRIGHTNESS_INIT; // 当前亮度0.0~1.0
 
     int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
     int eyes_blink_delay_ms = 20;   // 眨眼睛task CRGB值刷新的间隔时间
@@ -64,6 +64,11 @@ public:
 
     bool flag_eyes_colortrans = false; // 眼睛颜色变换标志位
     int colorTransSpeed = LED_COLORTRANS_SPEED_INIT;          // 颜色变换速度
+
+    float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
+    int bri_seq_len = 8;
+    int bri_seq_idx_rst = 5;
+    int bri_seq_idx = bri_seq_idx_rst;    
 
     LedEyes();  // 构造函数
     ~LedEyes(); // 析构函数
