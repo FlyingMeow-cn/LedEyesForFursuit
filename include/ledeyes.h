@@ -26,15 +26,15 @@ private:
     // const float LED_BRIGHTNESS_INIT = 0.1;     // 0.0~1.0  // 调试用
     const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
     const CRGB color24_1 = CRGB(50, 149, 183);  // 湖蓝色
-    const CRGB color24_2 = CRGB(255, 0, 0);     // 红色 不好看
-    const CRGB color24_3 = CRGB(0, 255, 0);     // 绿色 不好看
-    const CRGB color24_4 = CRGB(0, 0, 255);     // 蓝色 可以
-    const CRGB color24_5 = CRGB(255, 255, 0);   // 黄色 一般
-    const CRGB color24_6 = CRGB(255, 0, 255);   // 紫色 一般
-    const CRGB color24_7 = CRGB(0, 255, 255);   // 青色 和湖蓝色效果差不多
-    const CRGB color24_8 = CRGB(255, 255, 255); // 白色 可以
-    const CRGB color24_9 = CRGB(255, 165, 0);   // 橙色  和黄色差不多，一般
-    const CRGB color24_10 = CRGB(165, 20, 255); // 紫色 可以
+    const CRGB color24_2 = CRGB(255, 50, 0);     // 橙色
+    const CRGB color24_3 = CRGB(0, 255, 50);     // 青绿色
+    const CRGB color24_4 = CRGB(50, 0, 255);     // 蓝紫色
+    const CRGB color24_5 = CRGB(255, 255, 0);   // 黄色
+    const CRGB color24_6 = CRGB(255, 0, 255);   // 紫色
+    const CRGB color24_7 = CRGB(0, 255, 255);   // 青色
+    const CRGB color24_8 = CRGB(255, 255, 255); // 白色
+    const CRGB color24_9 = CRGB(255, 165, 0);   // 橙色
+    const CRGB color24_10 = CRGB(165, 20, 255); // 紫色
     const CRGB color24_11 = CRGB(20, 165, 255); // 和湖蓝色效果差不多
     const CRGB color24_12 = CRGB(20, 255, 165); // 和湖蓝色效果差不多
     const int LED_COLORTRANS_SPEED_INIT = 4;    // 颜色变换速度
@@ -53,7 +53,7 @@ public:
     CRGB leds_l[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
     CRGB leds_r[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
 
-    CRGB led_CRGBcolor_init = color24_1;        // 初始颜色的RGB值
+    const CRGB led_CRGBcolor_init = color24_1;        // 初始颜色的RGB值
     float led_brightness = LED_BRIGHTNESS_INIT; // 当前亮度0.0~1.0
 
     int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
@@ -65,10 +65,16 @@ public:
     bool flag_eyes_colortrans = false; // 眼睛颜色变换标志位
     int colorTransSpeed = LED_COLORTRANS_SPEED_INIT;          // 颜色变换速度
 
-    float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
-    int bri_seq_len = 8;
-    int bri_seq_idx_rst = 5;
-    int bri_seq_idx = bri_seq_idx_rst;    
+    const float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
+    const int bri_seq_len = 8;
+    const int bri_seq_idx_rst = 5;
+    int bri_seq_idx = bri_seq_idx_rst;   
+
+    const CRGB color24_seq[12] = {color24_1, color24_2, color24_3, color24_4, color24_5, color24_6, color24_7, color24_8, color24_9, color24_10, color24_11, color24_12};
+    const int color24_seq_len = 12;
+    const int color24_seq_idx_rst = 0;
+    int color_seq_idx = color24_seq_idx_rst; 
+    int color_seq_delta_idx = 1; // 颜色序列变化的步长 1或-1
 
     LedEyes();  // 构造函数
     ~LedEyes(); // 析构函数

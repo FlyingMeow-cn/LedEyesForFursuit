@@ -152,4 +152,32 @@ void voiceMsgHandler()
         SerialBT.println("关闭渐变");
         return;
     }
+
+    // 0100	重置颜色
+    if (incoming_string == "0100")
+    {
+        ledEyes.color_seq_idx = ledEyes.color24_seq_idx_rst;
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        Serial.println("重置颜色");
+        SerialBT.println("重置颜色");
+        return;
+    }
+
+    // 0101	切换颜色
+    if (incoming_string == "0101")
+    {
+        ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
+        if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
+        {
+            ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
+        }
+        if (ledEyes.color_seq_idx < 0)
+        {
+            ledEyes.color_seq_idx += ledEyes.color24_seq_len;
+        }
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        Serial.println("切换颜色");
+        SerialBT.println("切换颜色");
+        return;
+    }
 }
