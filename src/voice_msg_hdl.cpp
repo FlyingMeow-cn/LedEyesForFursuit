@@ -35,6 +35,7 @@ void voiceMsgHandler()
     // 0000 语音唤醒
     if (incoming_string == "0000")
     {
+        led_B_tigger = 1;
         Serial.println("语音唤醒");
         SerialBT.println("语音唤醒");
         // return;

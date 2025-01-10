@@ -9,6 +9,7 @@
 
 extern BluetoothSerial SerialBT;
 extern LedEyes ledEyes;
+extern bool led_B_tigger;
 
 void voiceMsgHandler();
 

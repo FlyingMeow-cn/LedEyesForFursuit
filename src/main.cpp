@@ -13,6 +13,8 @@ BluetoothSerial SerialBT;
 LedEyes ledEyes;
 String ble_helpmsg = "";
 
+bool led_B_tigger = false;
+
 void setup()
 {
     deviceSetup();
@@ -27,6 +29,7 @@ void setup()
     xTaskCreate(taskLedsColorTrans, "ledsColorTrans", 1024, &ledEyes, 3, NULL);
     xTaskCreate(taskEyesBlink, "taskEyesBlink", 1024, &ledEyes, 2, NULL);
     xTaskCreate(taskEyesUpdate, "taskEyesUpdate", 1024, &ledEyes, 1, NULL);
+    xTaskCreate(taskLedBlueBlink, "taskLedBlueBlink", 1024, NULL, 0, NULL);
 }
 
 void loop()
