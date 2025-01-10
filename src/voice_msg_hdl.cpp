@@ -4,16 +4,21 @@
 void voiceMsgHandler()
 {
     String incoming_string = ""; // 创建一个空字符串来存储接收到的数据
+#ifdef VOICE_CTRL_DEBUG
+    // 用于控制逻辑测试，使用电脑串口代替语音串口发送命令
     while (Serial.available())
     {                                             // 当还有数据可读时
         char incoming_char = (char)Serial.read(); // 读取字符
-        incoming_string += incoming_char;          // 将字符添加到字符串
+        incoming_string += incoming_char;         // 将字符添加到字符串
     }
-    // while (Serial2.available())
-    // {                                             // 当还有数据可读时
-    //     char incoming_char = Serial2.read(); // 读取字符
-    //     incoming_string += incoming_char;          // 将字符添加到字符串        
-    // }
+#else
+    // 使用语音控制
+    while (Serial2.available())
+    {                                        // 当还有数据可读时
+        char incoming_char = Serial2.read(); // 读取字符
+        incoming_string += incoming_char;    // 将字符添加到字符串
+    }
+#endif
 
     // 如果incoming_string为空，说明没有接收到任何数据，直接返回
     if (incoming_string == "")
@@ -23,7 +28,7 @@ void voiceMsgHandler()
     else
     {
         Serial.println("incoming_string: " + incoming_string);
-        incoming_string.trim();  // 去掉字符串前后的空格
+        incoming_string.trim(); // 去掉字符串前后的空格
         // Serial.println(incoming_string == "0000");
     }
 
@@ -146,8 +151,4 @@ void voiceMsgHandler()
         SerialBT.println("关闭渐变");
         return;
     }
-
-    
-
-
 }

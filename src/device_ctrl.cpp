@@ -9,8 +9,8 @@ void deviceSetup()
     digitalWrite(TEST_LED_G, LOW);
     digitalWrite(TEST_LED_B, LOW);
 
-    funEnable();
-    // funDisable();
+    // funEnable();
+    funDisable();
 }
 
 void funEnable()

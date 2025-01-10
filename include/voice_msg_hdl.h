@@ -5,6 +5,8 @@
 #include "BluetoothSerial.h"
 #include "ledeyes.h"
 
+// #define VOICE_CTRL_DEBUG
+
 extern BluetoothSerial SerialBT;
 extern LedEyes ledEyes;
 
