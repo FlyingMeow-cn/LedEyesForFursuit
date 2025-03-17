@@ -35,7 +35,7 @@ LedEyes::~LedEyes()
 /// @todo
 void LedEyes::init()
 {
-    led_brightness = LED_BRIGNTNESS_INIT;
+    led_brightness = LED_BRIGHTNESS_INIT;
     colorTransSpeed = LED_COLORTRANS_SPEED_INIT;
 
     flag_eyes_blink = true;
@@ -44,8 +44,8 @@ void LedEyes::init()
     flag_eyes_bri_gradient = true;
     // flag_eyes_bri_gradient = false;
 
-    flag_eyes_colortrans = true;
-    // flag_eyes_colortrans = false;
+    // flag_eyes_colortrans = true;
+    flag_eyes_colortrans = false;
 
     // for (int i = 0; i < NUM_LEDS; i++)
     // {
@@ -199,7 +199,7 @@ void taskEyesUpdate(void *pvParameters)
     while (1)
     {
         ledEyes.update();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(200 / portTICK_PERIOD_MS);
     }
 }
 
