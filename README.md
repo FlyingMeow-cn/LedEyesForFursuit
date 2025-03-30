@@ -71,3 +71,11 @@
 
 
 - 补充蓝牙控制接口和语音接口的控制指令
+
+
+
+
+
+`2025-03-30`
+
+![image-20250330171709657](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250330171709657.png)
