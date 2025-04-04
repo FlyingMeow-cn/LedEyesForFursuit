@@ -41,43 +41,43 @@ void bleMsgHandler()
         SerialBT.println(ble_helpmsg);
     }
 
-    // 修改眨眼间隔时间
-    String prefix_blinkpulse = "bp ";
-    if (incoming_string.startsWith(prefix_blinkpulse))
-    {
-        String numberPart = incoming_string.substring(prefix_blinkpulse.length());
-        // 判断是否为数字
-        if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
-        {
-            int value = numberPart.toInt();
-            ledEyes.eyes_blink_palse_ms = value * 10;
-            SerialBT.println("修改眨眼间隔时间为：" + String(ledEyes.eyes_blink_palse_ms) + "ms");
-        }
-        else
-        {
-            SerialBT.println("发送 bp + 正整数 以调整眨眼间隔时间  " + numberPart);
-            return;
-        }
-    }
+    // // 修改眨眼间隔时间
+    // String prefix_blinkpulse = "bp ";
+    // if (incoming_string.startsWith(prefix_blinkpulse))
+    // {
+    //     String numberPart = incoming_string.substring(prefix_blinkpulse.length());
+    //     // 判断是否为数字
+    //     if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
+    //     {
+    //         int value = numberPart.toInt();
+    //         ledEyes.eyes_blink_palse_ms[0] = value * 10;
+    //         SerialBT.println("修改眨眼间隔时间为：" + String(ledEyes.eyes_blink_palse_ms[0]) + "ms");
+    //     }
+    //     else
+    //     {
+    //         SerialBT.println("发送 bp + 正整数 以调整眨眼间隔时间  " + numberPart);
+    //         return;
+    //     }
+    // }
 
-    // 修改眨眼延时时间
-    String prefix_blinkdelay = "bd ";
-    if (incoming_string.startsWith(prefix_blinkdelay))
-    {
-        String numberPart = incoming_string.substring(prefix_blinkdelay.length());
-        // 判断是否为数字
-        if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
-        {
-            int value = numberPart.toInt();
-            ledEyes.eyes_blink_delay_ms = value;
-            SerialBT.println("修改眨眼延时时间为：" + String(ledEyes.eyes_blink_delay_ms) + "ms");
-        }
-        else
-        {
-            SerialBT.println("发送 bd + 正整数 以调整眨眼延时时间  " + numberPart);
-            return;
-        }
-    }
+    // // 修改眨眼延时时间
+    // String prefix_blinkdelay = "bd ";
+    // if (incoming_string.startsWith(prefix_blinkdelay))
+    // {
+    //     String numberPart = incoming_string.substring(prefix_blinkdelay.length());
+    //     // 判断是否为数字
+    //     if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
+    //     {
+    //         int value = numberPart.toInt();
+    //         ledEyes.eyes_blink_delay_ms = value;
+    //         SerialBT.println("修改眨眼延时时间为：" + String(ledEyes.eyes_blink_delay_ms) + "ms");
+    //     }
+    //     else
+    //     {
+    //         SerialBT.println("发送 bd + 正整数 以调整眨眼延时时间  " + numberPart);
+    //         return;
+    //     }
+    // }
 
     // 修改亮度
     String prefix_brightness = "bri ";
@@ -106,20 +106,25 @@ void bleMsgHandler()
         }
     }
 
-    // 修改是否眨眼标志  "blk on" "blk off"
+    // 修改是否眨眼标志  "blk on" "blk rand" "blk cst" "blk off"
     String prefix_blinkflag = "blk ";
     if (incoming_string.startsWith(prefix_blinkflag))
     {
         String flag = incoming_string.substring(prefix_blinkflag.length());
-        if (flag == "on")
+        if (flag == "on" || flag == "rand")
         {
-            ledEyes.flag_eyes_blink = true;
-            SerialBT.println("眨眼标志位开启");
+            ledEyes.blink_state = BLINK_ON_RANDOM;
+            SerialBT.println("随机间隔眨眼");
+        }
+        else if (flag == "cst")
+        {
+            ledEyes.blink_state = BLINK_ON_CONSTANT;
+            SerialBT.println("等间隔眨眼");
         }
         else if (flag == "off")
         {
-            ledEyes.flag_eyes_blink = false;
-            SerialBT.println("眨眼标志位关闭");
+            ledEyes.blink_state = BLINK_OFF;
+            SerialBT.println("眨眼暂停");
         }
         else
         {

@@ -12,19 +12,27 @@
 #include <FastLED.h>
 #include <math.h>
 
+void taskEyesBlinkTrigger(void *pvParameters); 
 void taskEyesBlink(void *pvParameters); // 眨眼睛任务 传入参数为LedEyes对象
 void taskEyesUpdate(void *pvParameters);
 void taskLedsColorTrans(void *pvParameters);
 CRGB hsv2Rgb(uint16_t h, uint8_t s, uint8_t v);
 CRGB briScale(CRGB color, float scale);
 
+enum eyes_blink_state
+{
+    BLINK_OFF,
+    BLINK_ON_CONSTANT,
+    BLINK_ON_RANDOM
+};
+
 class LedEyes
 {
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    // const float LED_BRIGHTNESS_INIT = 0.1;     // 0.0~1.0  // 调试用
-    const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
+    const float LED_BRIGHTNESS_INIT = 0.1;     // 0.0~1.0  // 调试用
+    // const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
     const CRGB color24_1 = CRGB(50, 149, 183);  // 湖蓝色
     const CRGB color24_2 = CRGB(255, 50, 0);     // 橙色
     const CRGB color24_3 = CRGB(0, 255, 50);     // 青绿色
@@ -39,6 +47,7 @@ private:
     const CRGB color24_12 = CRGB(20, 255, 165); // 和湖蓝色效果差不多
     const int LED_COLORTRANS_SPEED_INIT = 4;    // 颜色变换速度
 
+    
     // 类的内部变量
 
     // 内部标志变量
@@ -55,10 +64,11 @@ public:
 
     const CRGB led_CRGBcolor_init = color24_1;        // 初始颜色的RGB值
     float led_brightness = LED_BRIGHTNESS_INIT; // 当前亮度0.0~1.0
-
-    int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
-    int eyes_blink_delay_ms = 20;   // 眨眼睛task CRGB值刷新的间隔时间
+    const int eyes_blink_palse_ms[10] = {5000, 3500, 6000, 4000, 7000, 4500, 8000, 5000, 9000, 5500}; // 眨眼睛间隔时间
+    // int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
+    const int eyes_blink_delay_ms = 20;   // 眨眼睛task CRGB值刷新的间隔时间
     bool flag_eyes_blink = true;    // 眨眼睛标志位
+    eyes_blink_state blink_state = BLINK_ON_CONSTANT; // 眨眼睛标志位
 
     bool flag_eyes_bri_gradient = true; // 眼睛颜色渐变标志位
 

@@ -38,8 +38,8 @@ void LedEyes::init()
     led_brightness = LED_BRIGHTNESS_INIT;
     colorTransSpeed = LED_COLORTRANS_SPEED_INIT;
 
-    flag_eyes_blink = true;
-    // flag_eyes_blink = false;
+    blink_state = BLINK_ON_RANDOM;
+    flag_eyes_blink = false;
 
     flag_eyes_bri_gradient = true;
     // flag_eyes_bri_gradient = false;
@@ -131,6 +131,36 @@ void LedEyes::setLedsBrightness()
     }
 }
 
+void taskEyesBlinkTrigger(void *pvParameters)
+{
+    LedEyes &ledEyes = *(LedEyes *)pvParameters;
+    static int blink_pulse_idx = 0;
+    while (1)
+    {
+        switch (ledEyes.blink_state)
+        {
+        case BLINK_OFF:
+            ledEyes.flag_eyes_blink = false;
+            vTaskDelay(50 / portTICK_PERIOD_MS);
+            break;
+        case BLINK_ON_CONSTANT:
+            blink_pulse_idx = 0;
+            ledEyes.flag_eyes_blink = true;
+            vTaskDelay(ledEyes.eyes_blink_palse_ms[blink_pulse_idx] / portTICK_PERIOD_MS);
+            break;
+        case BLINK_ON_RANDOM:
+            blink_pulse_idx = (blink_pulse_idx + 1) % 10;
+            ledEyes.flag_eyes_blink = true;
+            vTaskDelay(ledEyes.eyes_blink_palse_ms[blink_pulse_idx] / portTICK_PERIOD_MS);
+            break;
+        default:
+            ledEyes.flag_eyes_blink = false;
+            vTaskDelay(50 / portTICK_PERIOD_MS);
+            break;
+        }
+    }
+}
+
 void taskEyesBlink(void *pvParameters)
 {
     LedEyes &ledEyes = *(LedEyes *)pvParameters;
@@ -178,7 +208,8 @@ void taskEyesBlink(void *pvParameters)
                 vTaskDelay(ledEyes.eyes_blink_delay_ms / portTICK_PERIOD_MS);
             }
             // Serial.println("task Eyes Blink");
-            vTaskDelay(ledEyes.eyes_blink_palse_ms / portTICK_PERIOD_MS);
+            // vTaskDelay(ledEyes.eyes_blink_palse_ms / portTICK_PERIOD_MS);
+            ledEyes.flag_eyes_blink = false; // 眨眼睛结束后，设置标志位为false
         }
         else
         {
@@ -188,7 +219,7 @@ void taskEyesBlink(void *pvParameters)
                 ledEyes.leds_r[led_index] = ledEyes.leds_britrans_r[led_index];
             }
             FastLED.show();
-            vTaskDelay(ledEyes.eyes_blink_palse_ms / portTICK_PERIOD_MS);
+            vTaskDelay(ledEyes.eyes_blink_delay_ms / portTICK_PERIOD_MS);
         }
     }
 }
