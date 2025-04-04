@@ -16,14 +16,21 @@ void taskEyesBlinkTrigger(void *pvParameters);
 void taskEyesBlink(void *pvParameters); // 眨眼睛任务 传入参数为LedEyes对象
 void taskEyesUpdate(void *pvParameters);
 void taskLedsColorTrans(void *pvParameters);
+void taskLedsColorShiftGradient(void *pvParameters);
 CRGB hsv2Rgb(uint16_t h, uint8_t s, uint8_t v);
 CRGB briScale(CRGB color, float scale);
 
-enum eyes_blink_state
+enum EyesBlinkMode
 {
-    BLINK_OFF,
-    BLINK_ON_CONSTANT,
-    BLINK_ON_RANDOM
+    BLINK_OFF,          // 关闭眨眼
+    BLINK_ON_CONSTANT,  // 恒定眨眼时间间隔
+    BLINK_ON_RANDOM     // 伪随机时间间隔
+};
+
+enum ColorShiftMode
+{
+    COLOR_SHIFT_OFF,
+    COLOR_SHIFT_ON
 };
 
 class LedEyes
@@ -53,9 +60,11 @@ private:
     // 内部标志变量
 
 public:
-    CRGB leds_color_l[NUM_LEDS];      // 未经变换的初始CRGB值
+    CRGB leds_color_l[NUM_LEDS];      // 未经变换的初始CRGB值（颜色切换的目标颜色值）
     CRGB leds_color_r[NUM_LEDS];      // 未经变换的初始CRGB值
-    CRGB leds_colortrans_l[NUM_LEDS]; // 颜色变换后的CRGB值
+    CRGB leds_colorshift_l[NUM_LEDS]; // 颜色切换后的CRGB值（颜色切换的当前颜色值）
+    CRGB leds_colorshift_r[NUM_LEDS]; // 颜色切换后的CRGB值
+    CRGB leds_colortrans_l[NUM_LEDS]; // 颜色变换后的CRGB值（效果：单个眼睛的不同LED呈现渐变效果）
     CRGB leds_colortrans_r[NUM_LEDS]; // 颜色变换后的CRGB值
     CRGB leds_britrans_l[NUM_LEDS];   // 亮度变换后的CRGB值
     CRGB leds_britrans_r[NUM_LEDS];   // 亮度变换后的CRGB值
@@ -68,12 +77,15 @@ public:
     // int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
     const int eyes_blink_delay_ms = 20;   // 眨眼睛task CRGB值刷新的间隔时间
     bool flag_eyes_blink = true;    // 眨眼睛标志位
-    eyes_blink_state blink_state = BLINK_ON_CONSTANT; // 眨眼睛标志位
+    EyesBlinkMode eyes_blink_mode = BLINK_ON_CONSTANT; // 眨眼睛标志位
 
     bool flag_eyes_bri_gradient = true; // 眼睛颜色渐变标志位
 
     bool flag_eyes_colortrans = false; // 眼睛颜色变换标志位
     int colorTransSpeed = LED_COLORTRANS_SPEED_INIT;          // 颜色变换速度
+    
+    const int color_shift_upadte_pluse_ms = 50;
+    int color_shift_mode = COLOR_SHIFT_OFF; // 颜色过渡模式
 
     const float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
     const int bri_seq_len = 8;

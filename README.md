@@ -46,7 +46,7 @@
 
 功能实现待办
 
-- 修改眨眼逻辑
+- 修改眨眼逻辑【已完成】
   - 增加触发变量`ledeyes.trigger_eyes_blink`
   - 使用该变量单次触发眨眼效果，再重新写线程触发flag
   - 模式：关闭眨眼 / 等时间间隔 / 伪随机时间间隔
@@ -54,7 +54,8 @@
 
 
 
-- 将ledeyes.color24_1 ~ ledeyes.color24_12 改为数组形式
+- 将ledeyes.color24_1 ~ ledeyes.color24_12 改为数组形式【已完成】
+- 优化颜色数组取值
 
 
 

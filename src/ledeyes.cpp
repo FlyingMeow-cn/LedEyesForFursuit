@@ -38,7 +38,7 @@ void LedEyes::init()
     led_brightness = LED_BRIGHTNESS_INIT;
     colorTransSpeed = LED_COLORTRANS_SPEED_INIT;
 
-    blink_state = BLINK_ON_RANDOM;
+    eyes_blink_mode = BLINK_ON_RANDOM;
     flag_eyes_blink = false;
 
     flag_eyes_bri_gradient = true;
@@ -46,6 +46,8 @@ void LedEyes::init()
 
     // flag_eyes_colortrans = true;
     flag_eyes_colortrans = false;
+
+    color_shift_mode = COLOR_SHIFT_ON;
 
     // for (int i = 0; i < NUM_LEDS; i++)
     // {
@@ -59,7 +61,8 @@ void LedEyes::init()
     //     leds_colortrans_l[i] = leds_color_l[i];
     //     leds_colortrans_r[i] = leds_color_r[i];
     // }
-    setLedsColorsSame(leds_colortrans_l, leds_colortrans_r, leds_color_l);
+    setLedsColorsDiff(leds_colorshift_l, leds_colorshift_r, leds_color_l, leds_color_r);
+    setLedsColorsDiff(leds_colortrans_l, leds_colortrans_r, leds_colorshift_l, leds_colorshift_r);
 }
 
 void LedEyes::update()
@@ -137,7 +140,7 @@ void taskEyesBlinkTrigger(void *pvParameters)
     static int blink_pulse_idx = 0;
     while (1)
     {
-        switch (ledEyes.blink_state)
+        switch (ledEyes.eyes_blink_mode)
         {
         case BLINK_OFF:
             ledEyes.flag_eyes_blink = false;
@@ -230,7 +233,41 @@ void taskEyesUpdate(void *pvParameters)
     while (1)
     {
         ledEyes.update();
-        vTaskDelay(200 / portTICK_PERIOD_MS);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+    }
+}
+
+void taskLedsColorShiftGradient(void *pvParameters)
+{
+    LedEyes &ledEyes = *(LedEyes *)pvParameters;
+    static float color_shift_step[3] = {0.0, 0.0, 0.0};
+    float step_factor = 0.2;
+
+    while (1)
+    {
+        color_shift_step[0] = (ledEyes.leds_color_l[0].r - ledEyes.leds_colorshift_l[0].r) * step_factor;
+        color_shift_step[1] = (ledEyes.leds_color_l[0].g - ledEyes.leds_colorshift_l[0].g) * step_factor;
+        color_shift_step[2] = (ledEyes.leds_color_l[0].b - ledEyes.leds_colorshift_l[0].b) * step_factor;        
+
+        switch (ledEyes.color_shift_mode)
+        {
+        case COLOR_SHIFT_OFF:
+            ledEyes.setLedsColorsDiff(ledEyes.leds_colorshift_l, ledEyes.leds_colorshift_r, ledEyes.leds_color_l, ledEyes.leds_color_r);
+            break;
+        case COLOR_SHIFT_ON:
+            for(int led_idx=0; led_idx<NUM_LEDS; led_idx++)
+            {
+                ledEyes.leds_colorshift_l[led_idx].r += color_shift_step[0];
+                ledEyes.leds_colorshift_l[led_idx].g += color_shift_step[1];
+                ledEyes.leds_colorshift_l[led_idx].b += color_shift_step[2];
+                ledEyes.leds_colorshift_r[led_idx].r += color_shift_step[0];
+                ledEyes.leds_colorshift_r[led_idx].g += color_shift_step[1];
+                ledEyes.leds_colorshift_r[led_idx].b += color_shift_step[2];
+            }
+            break;
+        }
+
+        vTaskDelay(50 / portTICK_PERIOD_MS);
     }
 }
 
@@ -275,8 +312,8 @@ void taskLedsColorTrans(void *pvParameters)
             }
             else
             {
-                ledEyes.leds_colortrans_l[led_index] = ledEyes.leds_color_l[led_index];
-                ledEyes.leds_colortrans_r[led_index] = ledEyes.leds_color_r[led_index];
+                ledEyes.leds_colortrans_l[led_index] = ledEyes.leds_colorshift_l[led_index];
+                ledEyes.leds_colortrans_r[led_index] = ledEyes.leds_colorshift_r[led_index];
             }
         }
         vTaskDelay(10 / portTICK_PERIOD_MS);

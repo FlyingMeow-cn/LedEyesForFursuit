@@ -113,17 +113,17 @@ void bleMsgHandler()
         String flag = incoming_string.substring(prefix_blinkflag.length());
         if (flag == "on" || flag == "rand")
         {
-            ledEyes.blink_state = BLINK_ON_RANDOM;
+            ledEyes.eyes_blink_mode = BLINK_ON_RANDOM;
             SerialBT.println("随机间隔眨眼");
         }
         else if (flag == "cst")
         {
-            ledEyes.blink_state = BLINK_ON_CONSTANT;
+            ledEyes.eyes_blink_mode = BLINK_ON_CONSTANT;
             SerialBT.println("等间隔眨眼");
         }
         else if (flag == "off")
         {
-            ledEyes.blink_state = BLINK_OFF;
+            ledEyes.eyes_blink_mode = BLINK_OFF;
             SerialBT.println("眨眼暂停");
         }
         else
