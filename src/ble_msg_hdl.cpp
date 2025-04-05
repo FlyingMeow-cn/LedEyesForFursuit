@@ -3,13 +3,23 @@
 void helpMsgSetup()
 {
     ble_helpmsg = "发送 rst 重置\n";
-    ble_helpmsg += "发送 bp + 整数 以调整眨眼间隔时间\n";
-    ble_helpmsg += "发送 bd + 整数 以调整眨眼延时时间\n";
-    ble_helpmsg += "发送 bri + 0~100之间整数 以调整眨眼亮度\n";
-    ble_helpmsg += "发送 blk on/off 以开启/关闭眨眼\n";
-    ble_helpmsg += "发送 brig on/off 以开启/关闭颜色渐变\n";
-    ble_helpmsg += "发送 ct on/off 以开启/关闭颜色变化效果\n";
-    ble_helpmsg += "发送 cts + 整数 以调整颜色变化速度\n";
+    // ble_helpmsg += "发送 bp + 整数 调整眨眼间隔时间\n";
+    // ble_helpmsg += "发送 bd + 整数 调整眨眼延时时间\n";
+    ble_helpmsg += "发送 bri + 0~100之间整数 调整眨眼亮度\n";
+    ble_helpmsg += "发送 blk on/off 开启/关闭眨眼\n";
+    ble_helpmsg += "发送 brig on/off 开启/关闭颜色渐变\n";
+    ble_helpmsg += "发送 clr r g b 设置眼睛颜色\n";
+    ble_helpmsg += "发送 clr + 切换下一个颜色\n";
+    ble_helpmsg += "发送 clr - 切换上一个颜色\n";
+    ble_helpmsg += "发送 clr rst 重置眼睛颜色\n";
+    ble_helpmsg += "发送 clr show 显示眼睛当前颜色\n";
+    ble_helpmsg += "发送 cs on/off 控制颜色变化效果开关\n";
+    ble_helpmsg += "发送 csd + 整数 控制颜色切换时延\n";
+    ble_helpmsg += "发送 csd rst 重置颜色切换时延\n";
+    
+    // ble_helpmsg += "发送 ct on/off 开启/关闭颜色变化效果\n";
+    // ble_helpmsg += "发送 cts + 整数 调整颜色变化速度\n";
+    ble_helpmsg += "发送 fan on/off 控制风扇开关\n";
 }
 
 void bleMsgHandler()
@@ -173,6 +183,36 @@ void bleMsgHandler()
             // int Rl = ledEyes.leds_color_l[0].r;
             SerialBT.println("当前眼睛颜色为：" + String(ledEyes.led_CRGBcolor_init.r) + " " + String(ledEyes.led_CRGBcolor_init.g) + " " + String(ledEyes.led_CRGBcolor_init.b));
         }
+        else if (colorPart == "+")
+        {
+            ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
+            if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
+            {
+                ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
+            }
+            if (ledEyes.color_seq_idx < 0)
+            {
+                ledEyes.color_seq_idx += ledEyes.color24_seq_len;
+            }
+            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+            // int Rl = ledEyes.leds_color_l[0].r;
+            SerialBT.println("当前眼睛颜色为：" + String(ledEyes.led_CRGBcolor_init.r) + " " + String(ledEyes.led_CRGBcolor_init.g) + " " + String(ledEyes.led_CRGBcolor_init.b));
+        }
+        else if (colorPart == "-")
+        {
+            ledEyes.color_seq_idx -= ledEyes.color_seq_delta_idx;
+            if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
+            {
+                ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
+            }
+            if (ledEyes.color_seq_idx < 0)
+            {
+                ledEyes.color_seq_idx += ledEyes.color24_seq_len;
+            }
+            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+            // int Rl = ledEyes.leds_color_l[0].r;
+            SerialBT.println("当前眼睛颜色为：" + String(ledEyes.led_CRGBcolor_init.r) + " " + String(ledEyes.led_CRGBcolor_init.g) + " " + String(ledEyes.led_CRGBcolor_init.b));
+        }
         else
         {
             int r, g, b;
@@ -185,6 +225,59 @@ void bleMsgHandler()
             SerialBT.println("设置眼睛颜色RGB为：" + String(r) + " " + String(g) + " " + String(b));
         }
     }
+
+    // 修改颜色变化效果 "cs on" "cs off" "cs inv"
+    String prefix_colorshiftflag = "cs ";
+    if (incoming_string.startsWith(prefix_colorshiftflag))
+    {
+        String flag = incoming_string.substring(prefix_colorshiftflag.length());
+        if (flag == "on")
+        {
+            ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+            SerialBT.println("颜色变化效果标志位开启");
+        }
+        else if (flag == "off")
+        {
+            ledEyes.color_shift_mode = COLOR_SHIFT_OFF;
+            SerialBT.println("颜色变化效果标志位关闭");
+        }
+        else if (flag == "inv")
+        {
+            ledEyes.color_shift_mode = COLOR_SHIFT_ON_INVERSE;
+            SerialBT.println("颜色变化效果标志位反转");
+        }
+        else
+        {
+            SerialBT.println("发送 cs on 或 cs off 以开启或关闭颜色变化效果标志位");
+            return;
+        }
+    }
+    
+    // 修改颜色切换间隔时间 "csd + 整数" “csd rst”
+    String prefix_csd = "csd ";
+    if (incoming_string.startsWith(prefix_csd))
+    {
+        String numberPart = incoming_string.substring(prefix_csd.length());
+        // 判断是否为数字
+        if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
+        {
+            int value = numberPart.toInt();
+            ledEyes.color_shift_delay_ms = value * 1000;
+            SerialBT.println("修改颜色切换间隔时间为：" + String(ledEyes.color_shift_delay_ms / 1000) + "s");
+        }
+        else if (numberPart == "rst")
+        {
+            ledEyes.color_shift_delay_ms = ledEyes.COLOR_SHIFT_DELAY_MS_INIT;
+            SerialBT.println("重置颜色切换间隔时间为：" + String(ledEyes.color_shift_delay_ms / 1000) + "s");
+        }
+        else
+        {
+            SerialBT.println("发送 csd + 正整数 以调整颜色切换间隔时间  " + numberPart);
+            return;
+        }
+    }
+
+    
 
     // 修改是否颜色变换标志  "ct on" "ct off"
     String prefix_ctflag = "ct ";

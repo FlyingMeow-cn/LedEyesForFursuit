@@ -249,6 +249,7 @@ void taskLedsColorShift(void *pvParameters)
             break;
 
         case COLOR_SHIFT_ON:
+            ledEyes.color_seq_delta_idx = 1;
             ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
             if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
             {
@@ -262,7 +263,8 @@ void taskLedsColorShift(void *pvParameters)
             break;
 
         case COLOR_SHIFT_ON_INVERSE:
-            ledEyes.color_seq_idx -= ledEyes.color_seq_delta_idx;
+            ledEyes.color_seq_delta_idx = -1;
+            ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
             if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
             {
                 ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
