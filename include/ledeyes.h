@@ -40,8 +40,8 @@ class LedEyes
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    // const float LED_BRIGHTNESS_INIT = 0.05;     // 0.0~1.0  // 调试用
-    const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
+    const float LED_BRIGHTNESS_INIT = 0.05;     // 0.0~1.0  // 调试用
+    // const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
 
     
 
@@ -106,7 +106,8 @@ public:
     
     const int color_shift_upadte_pluse_ms = 50;
     int color_shift_mode = COLOR_SHIFT_OFF; // 颜色过渡模式
-    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
+    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
+    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2; // 颜色切换延时  调试用
     int color_shift_delay_ms = COLOR_SHIFT_DELAY_MS_INIT; // 颜色过渡延时
 
     const float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};

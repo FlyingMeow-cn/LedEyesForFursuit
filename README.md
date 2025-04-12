@@ -111,9 +111,21 @@
 
 
 
+`2025-04-12`
+
+蓝牙命令cs inv后颜色不切换的原因找到了：taskLedsColorShiftGradient中与taskLedsColorShift中使用里同一种标志变量做switch判断
+
+修改：taskLedsColorShiftGradient常开
 
 
 
+【问题】
+
+- taskEyesUpdate与taskEyesBlink leds_l、leds_r的赋值有冲突，导致眨眼睛会闪（关闭眼睛渐变后十分明显） 如何协调这两个线程？
+- 上面的解释图中taskLedsColorShift的解释有误
+  - 需要重新整理现在的taskLedsColorShift与taskLedsColorShiftGradient的逻辑
+
+- 偶尔突然闪一下，亮度特别高？
 
 
 

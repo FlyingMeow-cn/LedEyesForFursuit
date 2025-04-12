@@ -246,36 +246,28 @@ void taskLedsColorShift(void *pvParameters)
         switch (ledEyes.color_shift_mode)
         {
         case COLOR_SHIFT_OFF:
+            ledEyes.color_seq_delta_idx = 0;
             break;
 
         case COLOR_SHIFT_ON:
             ledEyes.color_seq_delta_idx = 1;
-            ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
-            if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
-            {
-                ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
-            }
-            if (ledEyes.color_seq_idx < 0)
-            {
-                ledEyes.color_seq_idx += ledEyes.color24_seq_len;
-            }
-            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
             break;
 
         case COLOR_SHIFT_ON_INVERSE:
             ledEyes.color_seq_delta_idx = -1;
-            ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
-            if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
-            {
-                ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
-            }
-            if (ledEyes.color_seq_idx < 0)
-            {
-                ledEyes.color_seq_idx += ledEyes.color24_seq_len;
-            }
-            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
             break;
         }
+
+        ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
+        if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
+        {
+            ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
+        }
+        if (ledEyes.color_seq_idx < 0)
+        {
+            ledEyes.color_seq_idx += ledEyes.color24_seq_len;
+        }
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
 
         vTaskDelay(ledEyes.color_shift_delay_ms / portTICK_PERIOD_MS);
     }
@@ -291,24 +283,16 @@ void taskLedsColorShiftGradient(void *pvParameters)
     {
         color_shift_step[0] = (ledEyes.leds_color_l[0].r - ledEyes.leds_colorshift_l[0].r) * step_factor;
         color_shift_step[1] = (ledEyes.leds_color_l[0].g - ledEyes.leds_colorshift_l[0].g) * step_factor;
-        color_shift_step[2] = (ledEyes.leds_color_l[0].b - ledEyes.leds_colorshift_l[0].b) * step_factor;        
-
-        switch (ledEyes.color_shift_mode)
+        color_shift_step[2] = (ledEyes.leds_color_l[0].b - ledEyes.leds_colorshift_l[0].b) * step_factor; 
+        
+        for(int led_idx=0; led_idx<NUM_LEDS; led_idx++)
         {
-        case COLOR_SHIFT_OFF:
-            ledEyes.setLedsColorsDiff(ledEyes.leds_colorshift_l, ledEyes.leds_colorshift_r, ledEyes.leds_color_l, ledEyes.leds_color_r);
-            break;
-        case COLOR_SHIFT_ON:
-            for(int led_idx=0; led_idx<NUM_LEDS; led_idx++)
-            {
-                ledEyes.leds_colorshift_l[led_idx].r += color_shift_step[0];
-                ledEyes.leds_colorshift_l[led_idx].g += color_shift_step[1];
-                ledEyes.leds_colorshift_l[led_idx].b += color_shift_step[2];
-                ledEyes.leds_colorshift_r[led_idx].r += color_shift_step[0];
-                ledEyes.leds_colorshift_r[led_idx].g += color_shift_step[1];
-                ledEyes.leds_colorshift_r[led_idx].b += color_shift_step[2];
-            }
-            break;
+            ledEyes.leds_colorshift_l[led_idx].r += color_shift_step[0];
+            ledEyes.leds_colorshift_l[led_idx].g += color_shift_step[1];
+            ledEyes.leds_colorshift_l[led_idx].b += color_shift_step[2];
+            ledEyes.leds_colorshift_r[led_idx].r += color_shift_step[0];
+            ledEyes.leds_colorshift_r[led_idx].g += color_shift_step[1];
+            ledEyes.leds_colorshift_r[led_idx].b += color_shift_step[2];
         }
 
         vTaskDelay(50 / portTICK_PERIOD_MS);
