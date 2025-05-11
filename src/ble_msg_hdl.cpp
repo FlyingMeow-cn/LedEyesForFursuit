@@ -13,10 +13,9 @@ void helpMsgSetup()
     ble_helpmsg += "发送 clr - 切换上一个颜色\n";
     ble_helpmsg += "发送 clr rst 重置眼睛颜色\n";
     ble_helpmsg += "发送 clr show 显示眼睛当前颜色\n";
-    ble_helpmsg += "发送 cs on/off 控制颜色变化效果开关\n";
-    ble_helpmsg += "发送 csd + 整数 控制颜色切换时延\n";
-    ble_helpmsg += "发送 csd rst 重置颜色切换时延\n";
-    
+    ble_helpmsg += "发送 cs on/off/inv 控制颜色变化效果开关/反向\n";
+    ble_helpmsg += "发送 csd + 整数 控制颜色切换时延(秒)\n";
+    ble_helpmsg += "发送 csd rst 重置颜色切换时延\n";    
     // ble_helpmsg += "发送 ct on/off 开启/关闭颜色变化效果\n";
     // ble_helpmsg += "发送 cts + 整数 调整颜色变化速度\n";
     ble_helpmsg += "发送 fan on/off 控制风扇开关\n";
@@ -234,21 +233,21 @@ void bleMsgHandler()
         if (flag == "on")
         {
             ledEyes.color_shift_mode = COLOR_SHIFT_ON;
-            SerialBT.println("颜色变化效果标志位开启");
+            SerialBT.println("颜色变化效果开启，正向切换");
         }
         else if (flag == "off")
         {
             ledEyes.color_shift_mode = COLOR_SHIFT_OFF;
-            SerialBT.println("颜色变化效果标志位关闭");
+            SerialBT.println("颜色变化效果关闭");
         }
         else if (flag == "inv")
         {
             ledEyes.color_shift_mode = COLOR_SHIFT_ON_INVERSE;
-            SerialBT.println("颜色变化效果标志位反转");
+            SerialBT.println("颜色变化效果开启，反向切换");
         }
         else
         {
-            SerialBT.println("发送 cs on 或 cs off 以开启或关闭颜色变化效果标志位");
+            SerialBT.println("发送 cs on 或 cs off 以开启或关闭颜色变化效果");
             return;
         }
     }
