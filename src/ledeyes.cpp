@@ -246,7 +246,8 @@ void taskLedsColorShift(void *pvParameters)
         switch (ledEyes.color_shift_mode)
         {
         case COLOR_SHIFT_OFF:
-            ledEyes.color_seq_delta_idx = 0;
+            // 250511修改bug：在COLOR_SHIFT_OFF状态下，使用clr +/-命令无法切换颜色
+            // ledEyes.color_seq_delta_idx = 0;
             break;
 
         case COLOR_SHIFT_ON:
