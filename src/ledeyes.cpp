@@ -267,8 +267,13 @@ void taskLedsColorShift(void *pvParameters)
         {
             ledEyes.color_seq_idx += ledEyes.color24_seq_len;
         }
-        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
-
+        if (ledEyes.color_shift_mode != COLOR_SHIFT_OFF){
+            // 250511修改bug：在COLOR_SHIFT_OFF状态下，使用clr命令切换自定义颜色，会在下一时刻切换回颜色列表中的颜色，自定义颜色不能保持
+            // 这里加一个判断
+            ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        }
+        // ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        
         vTaskDelay(ledEyes.color_shift_delay_ms / portTICK_PERIOD_MS);
     }
 }
