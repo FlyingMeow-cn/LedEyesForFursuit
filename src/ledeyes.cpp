@@ -82,7 +82,6 @@ void LedEyes::update()
     FastLED.show();
 }
 
-
 void LedEyes::setLeds2SingleColor(CRGB leds_l[], CRGB leds_r[], CRGB color)
 {
     for (int i = 0; i < NUM_LEDS; i++)
@@ -246,7 +245,8 @@ void taskLedsColorShift(void *pvParameters)
         switch (ledEyes.color_shift_mode)
         {
         case COLOR_SHIFT_OFF:
-            ledEyes.color_seq_delta_idx = 0;
+            // 250511修改bug：在COLOR_SHIFT_OFF状态下，使用clr +/-命令无法切换颜色
+            // ledEyes.color_seq_delta_idx = 0;
             break;
 
         case COLOR_SHIFT_ON:
@@ -258,22 +258,23 @@ void taskLedsColorShift(void *pvParameters)
             break;
         }
 
-        ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
-        if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
+        if (ledEyes.color_shift_mode != COLOR_SHIFT_OFF)
         {
-            ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
-        }
-        if (ledEyes.color_seq_idx < 0)
-        {
-            ledEyes.color_seq_idx += ledEyes.color24_seq_len;
-        }
-        if (ledEyes.color_shift_mode != COLOR_SHIFT_OFF){
+            ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
+            if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
+            {
+                ledEyes.color_seq_idx -= ledEyes.color24_seq_len;
+            }
+            if (ledEyes.color_seq_idx < 0)
+            {
+                ledEyes.color_seq_idx += ledEyes.color24_seq_len;
+            }
             // 250511修改bug：在COLOR_SHIFT_OFF状态下，使用clr命令切换自定义颜色，会在下一时刻切换回颜色列表中的颜色，自定义颜色不能保持
             // 这里加一个判断
             ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
         }
         // ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
-        
+
         vTaskDelay(ledEyes.color_shift_delay_ms / portTICK_PERIOD_MS);
     }
 }
@@ -288,9 +289,9 @@ void taskLedsColorShiftGradient(void *pvParameters)
     {
         color_shift_step[0] = (ledEyes.leds_color_l[0].r - ledEyes.leds_colorshift_l[0].r) * step_factor;
         color_shift_step[1] = (ledEyes.leds_color_l[0].g - ledEyes.leds_colorshift_l[0].g) * step_factor;
-        color_shift_step[2] = (ledEyes.leds_color_l[0].b - ledEyes.leds_colorshift_l[0].b) * step_factor; 
-        
-        for(int led_idx=0; led_idx<NUM_LEDS; led_idx++)
+        color_shift_step[2] = (ledEyes.leds_color_l[0].b - ledEyes.leds_colorshift_l[0].b) * step_factor;
+
+        for (int led_idx = 0; led_idx < NUM_LEDS; led_idx++)
         {
             ledEyes.leds_colorshift_l[led_idx].r += color_shift_step[0];
             ledEyes.leds_colorshift_l[led_idx].g += color_shift_step[1];
