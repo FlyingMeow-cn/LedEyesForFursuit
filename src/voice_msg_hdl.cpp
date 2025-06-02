@@ -163,8 +163,26 @@ void voiceMsgHandler()
         return;
     }
 
-    // 0101	切换颜色
+    // 0101 打开颜色切换
     if (incoming_string == "0101")
+    {
+        ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+        Serial.println("颜色变化效果开启，正向切换");
+        SerialBT.println("颜色变化效果开启，正向切换");
+        return;
+    }
+
+    // 0102 关闭颜色切换
+    if (incoming_string == "0102")
+    {
+        ledEyes.color_shift_mode = COLOR_SHIFT_OFF;
+        Serial.println("颜色变化效果关闭");
+        SerialBT.println("颜色变化效果关闭");
+        return;
+    }
+
+    // 0103	切换颜色
+    if (incoming_string == "0103")
     {
         ledEyes.color_seq_idx += ledEyes.color_seq_delta_idx;
         if (ledEyes.color_seq_idx >= ledEyes.color24_seq_len)
@@ -180,4 +198,45 @@ void voiceMsgHandler()
         SerialBT.println("切换颜色");
         return;
     }
+
+    // 0111 切换蓝色
+    if (incoming_string == "0111")
+    {
+        ledEyes.color_seq_idx = 1; // 蓝色
+        Serial.println("切换颜色为蓝色");
+        SerialBT.println("切换颜色为蓝色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0112 切换蓝紫色
+    if (incoming_string == "0112")
+    {
+        ledEyes.color_seq_idx = 2; // 蓝紫色
+        Serial.println("切换颜色为蓝紫色");
+        SerialBT.println("切换颜色为蓝紫色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0113 切换紫色
+    if (incoming_string == "0113")
+    {
+        ledEyes.color_seq_idx = 3; // 紫色
+        Serial.println("切换颜色为紫色");
+        SerialBT.println("切换颜色为紫色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0114 切换粉色
+    if (incoming_string == "0114")
+    {
+        ledEyes.color_seq_idx = 4; // 粉色
+        Serial.println("切换颜色为粉色");
+        SerialBT.println("切换颜色为粉色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
 }

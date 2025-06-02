@@ -40,14 +40,15 @@ class LedEyes
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    const float LED_BRIGHTNESS_INIT = 0.05;  // 0.0~1.0  // 调试用
-    // const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
+    // const float LED_BRIGHTNESS_INIT = 0.05;  // 0.0~1.0  // 调试用
+    const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
 
-    const CRGB color24_1 = CRGB(50, 149, 183);   // 湖蓝色
-    const CRGB color24_2 = CRGB(38, 122, 253);   // 蓝色
-    const CRGB color24_3 = CRGB(50, 0, 255);     // 蓝紫色
-    const CRGB color24_4 = CRGB(255, 0, 255);    // 紫色
-    const CRGB color24_5 = CRGB(241, 97, 146);   // 粉色
+    // 颜色切换列表
+    const CRGB color24_1 = CRGB(50, 149, 183);   // 0 湖蓝色
+    const CRGB color24_2 = CRGB(38, 122, 253);   // 1 蓝色
+    const CRGB color24_3 = CRGB(50, 0, 255);     // 2 蓝紫色
+    const CRGB color24_4 = CRGB(255, 0, 255);    // 3 紫色
+    const CRGB color24_5 = CRGB(241, 97, 146);   // 4 粉色
     const CRGB color24_6 = CRGB(230, 57, 54);    // 红色
     const CRGB color24_7 = CRGB(254, 90, 36);    // 橙色
     const CRGB color24_8 = CRGB(254, 168, 40);   // 橙黄色
@@ -89,8 +90,8 @@ public:
 
     const int color_shift_update_pluse_ms = 50;
     int color_shift_mode = COLOR_SHIFT_OFF; // 颜色过渡模式
-    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
-    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2;       // 颜色切换延时  调试用
+    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
+    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2;       // 颜色切换延时  调试用
     int color_shift_delay_ms = COLOR_SHIFT_DELAY_MS_INIT; // 颜色过渡延时
 
     const float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
