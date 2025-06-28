@@ -12,12 +12,6 @@
 #include <FastLED.h>
 #include <math.h>
 
-void taskEyesBlinkTrigger(void *pvParameters);
-void taskEyesBlink(void *pvParameters); // 眨眼睛任务 传入参数为LedEyes对象
-void taskEyesUpdate(void *pvParameters);
-void taskLedsColorTrans(void *pvParameters);
-void taskLedsColorShiftGradient(void *pvParameters);
-void taskLedsColorShift(void *pvParameters);
 CRGB hsv2Rgb(uint16_t h, uint8_t s, uint8_t v);
 CRGB briScale(CRGB color, float scale);
 
@@ -40,8 +34,8 @@ class LedEyes
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    // const float LED_BRIGHTNESS_INIT = 0.05;  // 0.0~1.0  // 调试用
-    const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
+    const float LED_BRIGHTNESS_INIT = 0.05;  // 0.0~1.0  // 调试用
+    // const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
 
     // 颜色切换列表
     const CRGB color24_1 = CRGB(50, 149, 183);   // 0 湖蓝色
@@ -77,9 +71,11 @@ public:
 
     const CRGB led_CRGBcolor_init = color24_1;                                                        // 初始颜色的RGB值
     float led_brightness = LED_BRIGHTNESS_INIT;                                                       // 当前亮度0.0~1.0
-    const int eyes_blink_palse_ms[10] = {5000, 3500, 6000, 4000, 7000, 4500, 8000, 5000, 9000, 5500}; // 眨眼睛间隔时间
+    // const int eyes_blink_palse_ms[10] = {5000, 3500, 6000, 4000, 7000, 4500, 8000, 5000, 9000, 5500}; // 眨眼睛间隔时间（普通版）
+    const int eyes_blink_palse_ms[10] = {9000, 5500, 7000, 4000, 7000, 8000, 8500, 5500, 9000, 8500}; // 眨眼睛间隔时间（加长版）
     // int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
-    const int eyes_blink_delay_ms = 20;                // 眨眼睛task CRGB值刷新的间隔时间
+    const int eyes_blink_delay_ms = 30;                // 眨眼睛task CRGB值刷新的间隔时间
+    // const int eyes_blink_delay_ms = 20;                // 眨眼睛task CRGB值刷新的间隔时间
     bool flag_eyes_blink = true;                       // 眨眼睛标志位
     EyesBlinkMode eyes_blink_mode = BLINK_ON_CONSTANT; // 眨眼睛标志位
 
@@ -90,8 +86,8 @@ public:
 
     const int color_shift_update_pluse_ms = 50;
     int color_shift_mode = COLOR_SHIFT_OFF; // 颜色过渡模式
-    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
-    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2;       // 颜色切换延时  调试用
+    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
+    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2;       // 颜色切换延时  调试用
     int color_shift_delay_ms = COLOR_SHIFT_DELAY_MS_INIT; // 颜色过渡延时
 
     const float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
@@ -119,3 +115,4 @@ public:
 };
 
 #endif // LEDEYE_H
+

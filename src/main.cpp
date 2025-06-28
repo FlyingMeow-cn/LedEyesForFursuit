@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include "ledeyes.h"
+#include "led_tasks.h"
 #include "BluetoothSerial.h" //引入蓝牙函数库
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
@@ -26,13 +27,17 @@ void setup()
     helpMsgSetup();
     ledEyes.init();
 
-    xTaskCreate(taskEyesBlinkTrigger, "taskEyesBlinkTrigger", 1024, &ledEyes, 4, NULL);
-    xTaskCreate(taskLedsColorTrans, "ledsColorTrans", 1024, &ledEyes, 3, NULL);
-    xTaskCreate(taskLedsColorShiftGradient, "taskLedsColorShiftGradient", 1024, &ledEyes, 3, NULL);
-    xTaskCreate(taskLedsColorShift, "taskLedsColorShift", 1024, &ledEyes, 3, NULL);
-    xTaskCreate(taskEyesBlink, "taskEyesBlink", 1024, &ledEyes, 2, NULL);
-    xTaskCreate(taskEyesUpdate, "taskEyesUpdate", 1024, &ledEyes, 1, NULL);
-    xTaskCreate(taskLedBlueBlink, "taskLedBlueBlink", 1024, NULL, 0, NULL);
+    // 创建LED颜色赋值流程相关任务
+    xTaskCreate(taskLedsColorTrans,         "ledsColorTrans",               1024, &ledEyes, 3, NULL);
+    xTaskCreate(taskLedsColorShiftGradient, "taskLedsColorShiftGradient",   1024, &ledEyes, 3, NULL);
+    xTaskCreate(taskLedsColorShift,         "taskLedsColorShift",           1024, &ledEyes, 3, NULL);
+    
+    xTaskCreate(taskLedsBriCtrl,            "taskLedsBriCtrl",              1024, &ledEyes, 1, NULL);
+    xTaskCreate(taskEyesBlink,              "taskEyesBlink",                1024, &ledEyes, 2, NULL);
+    xTaskCreate(taskEyesBlinkTrigger,       "taskEyesBlinkTrigger",         1024, &ledEyes, 4, NULL);
+
+    // 创建LED蓝色指示灯任务 用于指示语音识别唤醒状态
+    xTaskCreate(taskLedBlueBlink,           "taskLedBlueBlink",             1024, NULL, 0, NULL);
 }
 
 void loop()
