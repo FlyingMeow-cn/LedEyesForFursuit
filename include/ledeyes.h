@@ -34,8 +34,12 @@ class LedEyes
 private:
     // 内部常量值
     const int FastLED_BRIGNTNESS_INIT = 255; // 0~255
-    const float LED_BRIGHTNESS_INIT = 0.05;  // 0.0~1.0  // 调试用
-    // const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
+
+    // const float LED_BRIGHTNESS_INIT = 0.05;  // 0.0~1.0  // 调试用
+    const float LED_BRIGHTNESS_INIT = 0.5;      // 0.0~1.0
+
+    const float LED_BRIFACTOR_TIMESHIFT_INIT = 1.0;
+    const float LED_BRI_TIMESHIFT_T_MS_INIT = 5 * 1000; // 亮度时变效果的周期时间（毫秒）
 
     // 颜色切换列表
     const CRGB color24_1 = CRGB(50, 149, 183);   // 0 湖蓝色
@@ -69,8 +73,12 @@ public:
     CRGB leds_l[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
     CRGB leds_r[NUM_LEDS];            // 最后赋值给WS2812的CRGB值
 
-    const CRGB led_CRGBcolor_init = color24_1;                                                        // 初始颜色的RGB值
-    float led_brightness = LED_BRIGHTNESS_INIT;                                                       // 当前亮度0.0~1.0
+    const CRGB led_CRGBcolor_init = color24_1;      // 初始颜色的RGB值
+    float led_brightness = LED_BRIGHTNESS_INIT;     // 当前亮度0.0~1.0
+    float led_brifactor_timeshift = LED_BRIFACTOR_TIMESHIFT_INIT; // 亮度时变效果中间变量
+    float led_bri_timeshift_T_ms = LED_BRI_TIMESHIFT_T_MS_INIT;      // 亮度时变效果的周期时间（毫秒）
+    bool flag_bri_breathe = false;                  // 亮度呼吸效果标志位
+
     // const int eyes_blink_palse_ms[10] = {5000, 3500, 6000, 4000, 7000, 4500, 8000, 5000, 9000, 5500}; // 眨眼睛间隔时间（普通版）
     const int eyes_blink_palse_ms[10] = {9000, 5500, 7000, 4000, 7000, 8000, 8500, 5500, 9000, 8500}; // 眨眼睛间隔时间（加长版）
     // int eyes_blink_palse_ms = 5000; // 眨眼睛间隔时间
@@ -86,9 +94,9 @@ public:
 
     const int color_shift_update_pluse_ms = 50;
     int color_shift_mode = COLOR_SHIFT_OFF; // 颜色过渡模式
-    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
-    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2;       // 颜色切换延时  调试用
-    int color_shift_delay_ms = COLOR_SHIFT_DELAY_MS_INIT; // 颜色过渡延时
+    const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 30; // 颜色切换延时
+    // const int COLOR_SHIFT_DELAY_MS_INIT = 1000 * 2;       // 颜色切换延时  调试用
+    int color_shift_delay_ms = COLOR_SHIFT_DELAY_MS_INIT; // 颜色切换延时
 
     const float bri_seq[8] = {0.03, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0};
     const int bri_seq_len = 8;

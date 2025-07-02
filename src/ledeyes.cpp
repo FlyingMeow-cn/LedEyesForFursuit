@@ -132,6 +132,16 @@ void LedEyes::setLedsBrightness()
             leds_britrans_r[i] = briScale(leds_britrans_r[i], bri_gradient_r[i]);
         }
     }
+
+    // 设置整体亮度时变效果
+    if (flag_bri_breathe)
+    {
+        for (int i = 0; i < NUM_LEDS; i++)
+        {
+            leds_britrans_l[i] = briScale(leds_britrans_l[i], led_brifactor_timeshift);
+            leds_britrans_r[i] = briScale(leds_britrans_r[i], led_brifactor_timeshift);
+        }
+    }
 }
 
 CRGB hsv2Rgb(uint16_t h, uint8_t s, uint8_t v)
@@ -179,6 +189,10 @@ CRGB hsv2Rgb(uint16_t h, uint8_t s, uint8_t v)
     return CRGB(r, g, b);
 }
 
+/// @brief 亮度缩放
+/// @param color 输入颜色
+/// @param scale 缩放因子
+/// @return 缩放后的颜色
 CRGB briScale(CRGB color, float scale)
 {
     CRGB color_new;

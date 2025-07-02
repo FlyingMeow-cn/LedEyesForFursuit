@@ -52,7 +52,11 @@ void taskLedsColorShiftGradient(void *pvParameters)
 {
     LedEyes &ledEyes = *(LedEyes *)pvParameters;
     static float color_shift_step[3] = {0.0, 0.0, 0.0};
-    float step_factor = 0.2;
+
+    // step_factor的值越小，颜色变化越平滑，切换速度越慢
+    // float step_factor = 0.2;
+    float step_factor = 0.1;
+    // float step_factor = 0.05;
 
     while (1)
     {
@@ -137,6 +141,18 @@ void taskLedsBriCtrl(void *pvParameters)
     }
 }
 
+void taskLedsBriBreathe(void *pvParameters)
+{
+    LedEyes &ledEyes = *(LedEyes *)pvParameters;
+    while (1)
+    {
+        int time = millis();
+
+        ledEyes.led_brifactor_timeshift = abs(sin(PI * time / ledEyes.led_bri_timeshift_T_ms));
+
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+    }
+}
 
 /// @brief 任务-LED眨眼触发
 /// @param pvParameters LED眼睛对象的指针

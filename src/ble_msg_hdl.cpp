@@ -8,6 +8,8 @@ void helpMsgSetup()
     ble_helpmsg += "发送 bri + 0~100之间整数 调整眨眼亮度\n";
     ble_helpmsg += "发送 blk on/off 开启/关闭眨眼\n";
     ble_helpmsg += "发送 brig on/off 开启/关闭颜色渐变\n";
+    ble_helpmsg += "发送 brth on/off 开启/关闭呼吸灯效果\n";
+    ble_helpmsg += "发送 brths + 0~100之间整数 调整呼吸灯速度\n";
     ble_helpmsg += "发送 clr r g b 设置眼睛颜色\n";
     ble_helpmsg += "发送 clr + 切换下一个颜色\n";
     ble_helpmsg += "发送 clr - 切换上一个颜色\n";
@@ -164,6 +166,52 @@ void bleMsgHandler()
         }
     }
 
+    // 修改是否开启呼吸灯效果标志："brth on" "brth off"
+    String prefix_breathflag = "brth ";
+    if (incoming_string.startsWith(prefix_breathflag))
+    {
+        String flag = incoming_string.substring(prefix_breathflag.length());
+        if (flag == "on")
+        {
+            ledEyes.flag_bri_breathe = true;
+            SerialBT.println("呼吸灯效果开启");
+        }
+        else if (flag == "off")
+        {
+            ledEyes.flag_bri_breathe = false;
+            SerialBT.println("呼吸灯效果关闭");
+        }
+        else
+        {
+            SerialBT.println("发送 brth on 或 brth off 以开启或关闭呼吸灯效果");
+            return;
+        }
+    }
+
+    // 修改呼吸灯速度 "brths + 整数"
+    String prefix_breathspeed = "brths ";
+    if (incoming_string.startsWith(prefix_breathspeed))
+    {
+        String numberPart = incoming_string.substring(prefix_breathspeed.length());
+        // 判断是否为数字
+        if (std::all_of(numberPart.begin(), numberPart.end(), ::isdigit))
+        {
+            int value = numberPart.toInt();
+            if (value < 1 || value > 100)
+            {
+                SerialBT.println("发送 brths + 1~100之间整数 以调整呼吸灯速度  " + numberPart);
+                return;
+            }
+            ledEyes.led_bri_timeshift_T_ms = 20 / float(value) * 1000;  // 周期0.2~20秒
+            SerialBT.println("修改呼吸灯周期为：" + String(ledEyes.led_bri_timeshift_T_ms / 1000.0, 2) + "s");
+        }
+        else
+        {
+            SerialBT.println("发送 brths + 1~100之间整数 以调整呼吸灯速度  " + numberPart);
+            return;
+        }
+    }
+
     // 修改眼睛颜色:
     // 命令“clr r g b” 以设置眼睛颜色
     // 命令“clr rst” 以重置眼睛颜色
@@ -316,6 +364,51 @@ void bleMsgHandler()
         else
         {
             SerialBT.println("发送 cts + 正整数 以调整颜色变化速度  " + numberPart);
+            return;
+        }
+    }
+
+    // 组合指令&模式控制
+    // "mode dj" 切换蹦迪模式：关闭自动眨眼标志位，开启亮度呼吸灯模式（快速）、开启颜色切换（快速）、切换最大亮度
+    // "mode pce" 切换舒缓模式：关闭自动眨眼标志位，开启亮度呼吸灯模式（慢速）、开启颜色切换（慢速）、切换最大亮度
+    // "mode nom" 切换普通模式/默认模式：打开自动眨眼标志位，关闭亮度呼吸灯模式、开启颜色切换（慢速）
+    String prefix_mode = "mode ";
+    if (incoming_string.startsWith(prefix_mode))
+    {
+        String mode = incoming_string.substring(prefix_mode.length());
+        if (mode == "dj")
+        {
+            ledEyes.flag_eyes_blink = false;
+            ledEyes.flag_bri_breathe = true;
+            ledEyes.led_bri_timeshift_T_ms = 0.2 * 1000; // 0.2秒
+            ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+            ledEyes.color_shift_delay_ms = 2 * 1000; // 2秒
+            ledEyes.led_brightness = 1.0; // 最大亮度
+            SerialBT.println("切换蹦迪模式");
+        }
+        else if (mode == "pce")
+        {
+            ledEyes.flag_eyes_blink = false;
+            ledEyes.flag_bri_breathe = true;
+            ledEyes.led_bri_timeshift_T_ms = 4.0 * 1000; // 4秒
+            ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+            ledEyes.color_shift_delay_ms = 30 * 1000; // 30秒
+            ledEyes.led_brightness = 1.0; // 最大亮度
+            SerialBT.println("切换舒缓模式");
+        }
+        else if (mode == "nom")
+        {
+            ledEyes.flag_eyes_blink = true;
+            ledEyes.flag_bri_breathe = false;
+            ledEyes.led_bri_timeshift_T_ms = 5.0 * 1000; // 5秒
+            ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+            ledEyes.color_shift_delay_ms = 30 * 1000; // 30秒
+            ledEyes.led_brightness = 0.5;
+            SerialBT.println("切换普通模式");
+        }
+        else
+        {
+            SerialBT.println("发送 mode dj、mode pce 或 mode nom 以切换模式");
             return;
         }
     }

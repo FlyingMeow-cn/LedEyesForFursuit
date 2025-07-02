@@ -33,6 +33,8 @@ void setup()
     xTaskCreate(taskLedsColorShift,         "taskLedsColorShift",           1024, &ledEyes, 3, NULL);
     
     xTaskCreate(taskLedsBriCtrl,            "taskLedsBriCtrl",              1024, &ledEyes, 1, NULL);
+    xTaskCreate(taskLedsBriBreathe,         "taskLedsBriBreathe",           1024, &ledEyes, 1, NULL);
+
     xTaskCreate(taskEyesBlink,              "taskEyesBlink",                1024, &ledEyes, 2, NULL);
     xTaskCreate(taskEyesBlinkTrigger,       "taskEyesBlinkTrigger",         1024, &ledEyes, 4, NULL);
 
