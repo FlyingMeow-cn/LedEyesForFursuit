@@ -154,6 +154,141 @@ void voiceMsgHandler()
         return;
     }
 
+    // 0028 开启眨眼 打开眨眼 （启用眨眼标志自动置位）
+    if (incoming_string == "0028")
+    {
+        ledEyes.flag_eyes_blink = true;
+        Serial.println("开启眨眼");
+        SerialBT.println("开启眨眼");
+        return;
+    }
+
+    // 0029 关闭眨眼
+    if (incoming_string == "0029")
+    {
+        ledEyes.flag_eyes_blink = false;
+        Serial.println("关闭眨眼");
+        SerialBT.println("关闭眨眼");
+        return;
+    }
+
+    // 0030 亮度一
+    if (incoming_string == "0030")
+    {
+        ledEyes.bri_seq_idx = 2;
+        ledEyes.led_brightness = ledEyes.bri_seq[ledEyes.bri_seq_idx];
+        Serial.println("亮度一");
+        SerialBT.println("亮度一");
+        return;
+    }
+
+    // 0031 亮度二
+    if (incoming_string == "0031")
+    {
+        ledEyes.bri_seq_idx = 3;
+        ledEyes.led_brightness = ledEyes.bri_seq[ledEyes.bri_seq_idx];
+        Serial.println("亮度二");
+        SerialBT.println("亮度二");
+        return;
+    }
+
+    // 0032 亮度三
+    if (incoming_string == "0032")
+    {
+        ledEyes.bri_seq_idx = 5;
+        ledEyes.led_brightness = ledEyes.bri_seq[ledEyes.bri_seq_idx];
+        Serial.println("亮度三");
+        SerialBT.println("亮度三");
+        return;
+    }
+
+    // 0033 呼吸灯速度一
+    if (incoming_string == "0033")
+    {
+        ledEyes.led_bri_timeshift_T_ms = 5.0 * 1000; // 5秒
+        Serial.println("呼吸灯速度一");
+        SerialBT.println("呼吸灯速度一");
+        return;
+    }
+
+    // 0034 呼吸灯速度二
+    if (incoming_string == "0034")
+    {
+        ledEyes.led_bri_timeshift_T_ms = 2.0 * 1000; // 2秒
+        Serial.println("呼吸灯速度二");
+        SerialBT.println("呼吸灯速度二");
+        return;
+    }
+
+    // 0035 呼吸灯速度三
+    if (incoming_string == "0035")
+    {
+        ledEyes.led_bri_timeshift_T_ms = 1.0 * 1000; // 1秒
+        Serial.println("呼吸灯速度三");
+        SerialBT.println("呼吸灯速度三");
+        return;
+    }
+
+    // 0036 呼吸灯速度四
+    if (incoming_string == "0036")
+    {
+        ledEyes.led_bri_timeshift_T_ms = 0.5 * 1000; // 0.5秒
+        Serial.println("呼吸灯速度四");
+        SerialBT.println("呼吸灯速度四");
+        return;
+    }
+
+    // 0037 呼吸灯速度五
+    if (incoming_string == "0037")
+    {
+        ledEyes.led_bri_timeshift_T_ms = 0.2 * 1000; // 0.2秒
+        Serial.println("呼吸灯速度五");
+        SerialBT.println("呼吸灯速度五");
+        return;
+    }
+
+    // 0040 默认模式 普通模式 重置模式
+    if (incoming_string == "0040")
+    {
+        ledEyes.flag_eyes_blink = true;
+        ledEyes.flag_bri_breathe = false;
+        ledEyes.led_bri_timeshift_T_ms = 5.0 * 1000; // 5秒
+        ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+        ledEyes.color_shift_delay_ms = 30 * 1000; // 30秒
+        ledEyes.led_brightness = 0.5;
+        Serial.println("默认模式");
+        SerialBT.println("默认模式");
+        return;
+    }
+
+    // 0041 蹦迪模式 DJ模式
+    if (incoming_string == "0041")
+    {
+        ledEyes.flag_eyes_blink = false;
+        ledEyes.flag_bri_breathe = true;
+        ledEyes.led_bri_timeshift_T_ms = 0.2 * 1000; // 0.2秒
+        ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+        ledEyes.color_shift_delay_ms = 2 * 1000; // 2秒
+        ledEyes.led_brightness = 1.0; // 最大亮度
+        Serial.println("蹦迪模式");
+        SerialBT.println("蹦迪模式");
+        return;
+    }
+
+    // 0042 舒缓模式 平缓模式
+    if (incoming_string == "0042")
+    {
+        ledEyes.flag_eyes_blink = false;
+        ledEyes.flag_bri_breathe = true;
+        ledEyes.led_bri_timeshift_T_ms = 4.0 * 1000; // 4秒
+        ledEyes.color_shift_mode = COLOR_SHIFT_ON;
+        ledEyes.color_shift_delay_ms = 30 * 1000; // 30秒
+        ledEyes.led_brightness = 1.0; // 最大亮度
+        Serial.println("舒缓模式");
+        SerialBT.println("舒缓模式");
+        return;
+    }
+
     // 0100	重置颜色
     if (incoming_string == "0100")
     {
@@ -200,6 +335,51 @@ void voiceMsgHandler()
         return;
     }
 
+    // 0103 颜色切换速度一
+    if (incoming_string == "0103")
+    {
+        ledEyes.color_shift_delay_ms = 60 * 1000; // 60秒
+        Serial.println("颜色切换速度一");
+        SerialBT.println("颜色切换速度一");
+        return;
+    }
+
+    // 0104 颜色切换速度二
+    if (incoming_string == "0104")
+    {
+        ledEyes.color_shift_delay_ms = 30 * 1000; // 30秒
+        Serial.println("颜色切换速度二");
+        SerialBT.println("颜色切换速度二");
+        return;
+    }
+
+    // 0105 颜色切换速度三
+    if (incoming_string == "0105")
+    {
+        ledEyes.color_shift_delay_ms = 10 * 1000; // 10秒
+        Serial.println("颜色切换速度三");
+        SerialBT.println("颜色切换速度三");
+        return;
+    }
+
+    // 0106 颜色切换速度四
+    if (incoming_string == "0106")
+    {
+        ledEyes.color_shift_delay_ms = 5 * 1000; // 5秒
+        Serial.println("颜色切换速度四");
+        SerialBT.println("颜色切换速度四");
+        return;
+    }
+
+    // 0107 颜色切换速度五
+    if (incoming_string == "0107")
+    {
+        ledEyes.color_shift_delay_ms = 2 * 1000; // 2秒
+        Serial.println("颜色切换速度五");
+        SerialBT.println("颜色切换速度五");
+        return;
+    }
+
     // 0111 切换蓝色
     if (incoming_string == "0111")
     {
@@ -236,6 +416,56 @@ void voiceMsgHandler()
         ledEyes.color_seq_idx = 4; // 粉色
         Serial.println("切换颜色为粉色");
         SerialBT.println("切换颜色为粉色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0115 切换红色
+    if (incoming_string == "0115")
+    {
+        ledEyes.color_seq_idx = 5; // 红色
+        Serial.println("切换颜色为红色");
+        SerialBT.println("切换颜色为红色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0116	切换橙色
+    if (incoming_string == "0116")
+    {
+        ledEyes.color_seq_idx = 6; // 橙色
+        Serial.println("切换颜色为橙色");
+        SerialBT.println("切换颜色为橙色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0117	切换橙黄色
+    if (incoming_string == "0117")
+    {
+        ledEyes.color_seq_idx = 7; // 橙黄色
+        Serial.println("切换颜色为橙黄色");
+        SerialBT.println("切换颜色为橙黄色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0118	切换白色
+    if (incoming_string == "0118")
+    {
+        ledEyes.color_seq_idx = 8; // 白色
+        Serial.println("切换颜色为白色");
+        SerialBT.println("切换颜色为白色");
+        ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
+        return;
+    }
+
+    // 0119	切换绿色
+    if (incoming_string == "0119")
+    {
+        ledEyes.color_seq_idx = 10; // 绿色
+        Serial.println("切换颜色为绿色");
+        SerialBT.println("切换颜色为绿色");
         ledEyes.setLeds2SingleColor(ledEyes.leds_color_l, ledEyes.leds_color_r, ledEyes.color24_seq[ledEyes.color_seq_idx]);
         return;
     }

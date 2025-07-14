@@ -47,13 +47,13 @@ private:
     const CRGB color24_3 = CRGB(50, 0, 255);     // 2 蓝紫色
     const CRGB color24_4 = CRGB(255, 0, 255);    // 3 紫色
     const CRGB color24_5 = CRGB(241, 97, 146);   // 4 粉色
-    const CRGB color24_6 = CRGB(230, 57, 54);    // 红色
-    const CRGB color24_7 = CRGB(254, 90, 36);    // 橙色
-    const CRGB color24_8 = CRGB(254, 168, 40);   // 橙黄色
-    const CRGB color24_9 = CRGB(253, 239, 200);  // 白色
-    const CRGB color24_10 = CRGB(223, 233, 116); // 浅黄色
-    const CRGB color24_11 = CRGB(129, 203, 197); // 绿色
-    const CRGB color24_12 = CRGB(130, 223, 237); // 青色
+    const CRGB color24_6 = CRGB(230, 57, 54);    // 5 红色
+    const CRGB color24_7 = CRGB(254, 90, 36);    // 6 橙色
+    const CRGB color24_8 = CRGB(254, 168, 40);   // 7 橙黄色
+    const CRGB color24_9 = CRGB(253, 239, 200);  // 8 白色
+    const CRGB color24_10 = CRGB(223, 233, 116); // 9 浅黄色
+    const CRGB color24_11 = CRGB(129, 203, 197); // 10 绿色
+    const CRGB color24_12 = CRGB(130, 223, 237); // 11 青色
 
     const int LED_COLORTRANS_SPEED_INIT = 4; // 颜色变换速度
 
