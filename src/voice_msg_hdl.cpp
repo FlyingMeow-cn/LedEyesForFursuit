@@ -157,7 +157,7 @@ void voiceMsgHandler()
     // 0028 开启眨眼 打开眨眼 （启用眨眼标志自动置位）
     if (incoming_string == "0028")
     {
-        ledEyes.flag_eyes_blink = true;
+        ledEyes.eyes_blink_mode = BLINK_ON_RANDOM;
         Serial.println("开启眨眼");
         SerialBT.println("开启眨眼");
         return;
@@ -166,7 +166,7 @@ void voiceMsgHandler()
     // 0029 关闭眨眼
     if (incoming_string == "0029")
     {
-        ledEyes.flag_eyes_blink = false;
+        ledEyes.eyes_blink_mode = BLINK_OFF;
         Serial.println("关闭眨眼");
         SerialBT.println("关闭眨眼");
         return;
@@ -244,6 +244,24 @@ void voiceMsgHandler()
         ledEyes.led_bri_timeshift_T_ms = 0.2 * 1000; // 0.2秒
         Serial.println("呼吸灯速度五");
         SerialBT.println("呼吸灯速度五");
+        return;
+    }
+
+    // 0038 打开呼吸灯
+    if (incoming_string == "0038")
+    {
+        ledEyes.flag_bri_breathe = true;
+        Serial.println("打开呼吸灯");
+        SerialBT.println("打开呼吸灯");
+        return;
+    }
+
+    // 0039 关闭呼吸灯
+    if (incoming_string == "0039")
+    {
+        ledEyes.flag_bri_breathe = false;
+        Serial.println("关闭呼吸灯");
+        SerialBT.println("关闭呼吸灯");
         return;
     }
 
@@ -335,8 +353,8 @@ void voiceMsgHandler()
         return;
     }
 
-    // 0103 颜色切换速度一
-    if (incoming_string == "0103")
+    // 0104 颜色切换速度一
+    if (incoming_string == "0104")
     {
         ledEyes.color_shift_delay_ms = 60 * 1000; // 60秒
         Serial.println("颜色切换速度一");
@@ -344,8 +362,8 @@ void voiceMsgHandler()
         return;
     }
 
-    // 0104 颜色切换速度二
-    if (incoming_string == "0104")
+    // 0105 颜色切换速度二
+    if (incoming_string == "0105")
     {
         ledEyes.color_shift_delay_ms = 30 * 1000; // 30秒
         Serial.println("颜色切换速度二");
@@ -353,8 +371,8 @@ void voiceMsgHandler()
         return;
     }
 
-    // 0105 颜色切换速度三
-    if (incoming_string == "0105")
+    // 0106 颜色切换速度三
+    if (incoming_string == "0106")
     {
         ledEyes.color_shift_delay_ms = 10 * 1000; // 10秒
         Serial.println("颜色切换速度三");
@@ -362,8 +380,8 @@ void voiceMsgHandler()
         return;
     }
 
-    // 0106 颜色切换速度四
-    if (incoming_string == "0106")
+    // 0107 颜色切换速度四
+    if (incoming_string == "0107")
     {
         ledEyes.color_shift_delay_ms = 5 * 1000; // 5秒
         Serial.println("颜色切换速度四");
@@ -371,8 +389,8 @@ void voiceMsgHandler()
         return;
     }
 
-    // 0107 颜色切换速度五
-    if (incoming_string == "0107")
+    // 0108 颜色切换速度五
+    if (incoming_string == "0108")
     {
         ledEyes.color_shift_delay_ms = 2 * 1000; // 2秒
         Serial.println("颜色切换速度五");

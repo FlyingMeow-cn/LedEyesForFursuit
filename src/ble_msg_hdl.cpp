@@ -21,6 +21,9 @@ void helpMsgSetup()
     // ble_helpmsg += "发送 ct on/off 开启/关闭颜色变化效果\n";
     // ble_helpmsg += "发送 cts + 整数 调整颜色变化速度\n";
     ble_helpmsg += "发送 fan on/off 控制风扇开关\n";
+    ble_helpmsg += "mode dj  切换蹦迪模式\n";
+    ble_helpmsg += "mode pce 切换舒缓模式\n";
+    ble_helpmsg += "mode nom 切换普通模式\n";
 }
 
 void bleMsgHandler()
