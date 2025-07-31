@@ -3,6 +3,8 @@
 
 设计人：[@雪山飞喵ovo](https://space.bilibili.com/651746680)
 
+> 本文引用的图片均已标明来源，如有侵权，请联系删除哦꒰*•ɷ•*꒱
+
 
 
 ## 项目简介
@@ -11,7 +13,9 @@
 
 【展示图片&视频】
 
+效果展示
 
+内部连接展示
 
 （目录）
 
@@ -23,45 +27,33 @@
 
 ### 项目背景
 
-现有日系兽装发光眼方案主要有以下几种：
+现有的日系兽装发光眼方案主要有以下几种：
 
-1. 冷光片方案
+1. **冷光片方案：**使用可裁剪的冷光片剪出眼睛虹膜需要的形状，通电即发光。如[@AlZnCuLXT-Leo](https://space.bilibili.com/453770685)制作的发光眼炫酷小狼（下图①②）和[@是沐笙哦](https://space.bilibili.com/88811434)制作的恶魔猫猫[@坏猫咪Noct](https://space.bilibili.com/436821741)（下图③），均采用此种方法，①图所在视频有分享制作方式。这种方案优点在于制作简单，但通常无法改变亮度及颜色。![image-20250731132842081](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250731132842081.png)
+   
+   > ① [你好，我又来发帅帅的兽装发光眼制作方法分享了，冷光片版本~_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1t8RRYVEWB/)
+   >② [【兽装掉落展示】发光眼炫酷小狼半成品꒰ *•ɷ•* ꒱_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1z9dhYYELH/)
+   > ③ [坏猫咪Noct的动态 - 哔哩哔哩](https://www.bilibili.com/opus/901174724123426819)
+   
+2. **遥控灯带方案：**使用市面上可以直接买到的成品遥控灯带制作发光眼。如[@荒糖乐园](https://space.bilibili.com/386197384)制作的角色（下图①）,可以使用遥控器控制灯带开关及调整亮度；[@梓申_耶加Yirga](https://space.bilibili.com/10738663)进一步使用遥控灯带制作了一款通用的发光眼模块（下图②），可以直接贴在兽头眼睛内侧，对于已经做好兽装但想要加发光眼的毛毛是很好的选择；成品的遥控灯带在某宝有售（下图③）。这种方案优点在于制作简单、且可以根据遥控器或手机APP设定改变发光眼颜色及亮度，但动态效果比较单一，而且使用遥控器的按键操作方式对单人出毛不是很友好，通常需要有陪同来操作。[@Real_Even_](https://space.bilibili.com/824087)与[@是沐笙哦](https://space.bilibili.com/88811434)制作的发光眼兽装结合手机端的语音识别功能实现了对发光眼的语音控制（下图④），推测也是类似于使用遥控灯带的方案。![image-20250731141416818](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250731141416818.png)
 
+   > ① [【兽装制作】【收录角色：06】PartA:兽装发光眼睛__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV15Q4y1C7fj/)
+   > ② [发光眼定制方式&使用教程__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1oN41187zT/?vd_source=3d0e286d695b61ee17471629138cb89e)
+   > ④ [兽装贾维斯，解放双手，无需陪同_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XDiyYVE8X/)
 
+3. **MCU+可编程灯珠方案：**使用微处理器(MCU)和可编程控制的RGB三色LED灯制作发光眼。如[@F-350](https://space.bilibili.com/478983938)制作的发光眼（下图①），包括一个控制主板和一个交互终端（均使用ESP32-WROOM单片机），可以实现颜色切换功能和眨眼等动态效果；[@榊原结衣-](https://space.bilibili.com/3072475)也实现了类似的发光眼（下图②），可由APP操控切换颜色并实现一些动态效果。我认为目前发光眼实现效果最好、最成熟的方案是由[@硅核](https://space.bilibili.com/489787289)设计的可编程发光眼（下图③④），可以通过配套的发光眼编辑器_Corona Studio_自定义设置动态效果（下图⑤），同时也设计了相应的语音控制方案（下图⑥）。这种方案优点在于定制化程度高，可由MCU实时控制各个灯珠的RGB颜色，从而实现各种各样的动态效果，同时结合MCU的外设接口可以实现多种交互方式；缺点在于定制化过程复杂、制作门槛高，目前还没有较为成熟的开源方案。
+   ![image-20250731150719643](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250731150719643.png)
 
-2. 遥控灯带方案
+   > ① [兽装发光眼＆内置风扇介绍__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1nPFceFE2c/?spm_id_from=333.337.search-card.all.click&vd_source=3d0e286d695b61ee17471629138cb89e)
+   > ② [今年最后的一个委托 是个伪全 可以app操控换色的发光眼 直视我的眼睛！！_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1gC6JY2Ez7/?spm_id_from=333.337.search-card.all.click&vd_source=3d0e286d695b61ee17471629138cb89e)
+   > ③ [【兽装】可以眨眼的兽装！陨石边牧掉落展示__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1MT411X7Hb/)
+   > ④ [故障效果__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1SN4y1d7fy)
+   > ⑤ [【兽装】发光眼编辑器Corona Studio使用教程_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1iP4y1T7dP/)
+   > ⑥ [你好，VIR。_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV12o4y1J7uq)
 
-
-
-3. MCU+可编程灯珠方案
-
-
-
-对于效果最好的“MCU+可编程灯珠方案”，目前还没有较为成熟的开源方案。
-
-（一张图，3个方案成品截图  注明来源视频）
-
-
+本项目使用**MCU+可编程灯珠方案**，MCU使用ESP32-WROOM-32E，可编程灯珠使用WS2812B，同时使用ASRPRO模组进行语音指令识别。希望可以为有兴趣自制发光眼的毛毛们提供一些参考！
 
 ### 项目内容
-
-为了克服现有方案缺点，同时设计一款较低成本的发光眼方案，决定采用ESP32+WS2812灯珠的方式实现可编程控制的发光眼，同时引入ADRPRO模块进行语音指令识别。
-
-本方案的主要特点如下：
-
-- 集成语音控制功能：
-  
-- 方便的多模式切换：
-  
-
-- 全灯珠可编程控制：
-  
-
-
-
-亮度上下渐变 眨眼睛
-
-
 
 项目开源内容包括：
 
@@ -69,8 +61,6 @@
 - 发光眼外壳的结构设计工程及模型文件（使用Solidworks设计）
 - 发光眼的ESP32固件程序源码（使用VScode PlatformIO开发框架）
 - ASRPRO语音识别程序的`.hd`文件（使用ASRPRO开发工具天问Bolck）
-
-
 
 
 
@@ -197,161 +187,3 @@
 3. 向发光眼设备下发蓝牙串口指令
 
 
-
-## 程序开发日志
-
-**==【注意！！！】烧录程序前根据硬件引脚检查宏定义==**
-
-`2024-10-19 20:18` 整理程序思路：
-
-`2024-10-26 21:37` 整理程序思路：
-
-**LED颜色显示逻辑：**
-
-![image-20241026213716994](https://gitee.com/FlyingMeow/mypic/raw/master/image-20241026213716994.png)
-
-
-
-
-
-**主程序main：**
-
-- 初始化、启用task
-- 蓝牙串口消息处理
-
-
-
-**taskEyesBlink：控制眨眼睛的task**
-
-
-
-**taskEyesUpdate：控制LED显示刷新的task**
-
-
-
-`2025-01-04`
-
-语音识别功能测试
-
-
-
-`2025-03-17`
-
-功能实现待办
-
-- 修改眨眼逻辑【已完成】
-  - 增加触发变量`ledeyes.trigger_eyes_blink`
-  - 使用该变量单次触发眨眼效果，再重新写线程触发flag
-  - 模式：关闭眨眼 / 等时间间隔 / 伪随机时间间隔
-  - `ledEyes.flag_eyes_blink`标志位的逻辑改到flag的触发线程
-
-
-
-- 将ledeyes.color24_1 ~ ledeyes.color24_12 改为数组形式【已完成】
-- 优化颜色数组取值
-
-
-
-- 增加颜色的平滑切换效果、引出相关参数接口
-  - 线性的平滑切换
-  - 朝向目标点的速率随距离缓慢下降的平滑切换
-
-
-
-- 增加自动颜色切换模式
-  - 固定时间，刷新目标颜色值
-  - 平滑切换速度放慢
-
-
-
-- 补充蓝牙控制接口和语音接口的控制指令
-
-
-
-
-
-`2025-03-30`
-
-![image-20250330171709657](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250330171709657.png)
-
-
-
-颜色值：
-
-50, 149, 183  *湖蓝色*
-
-38, 122, 253
-
-50, 0, 255
-
-255, 0, 255
-
-241, 97, 146
-
-230, 57, 54
-
-254, 90, 36
-
-254, 168, 40
-
-253, 239, 89
-
-223, 233, 116
-
-129, 203, 197
-
-130, 223, 237
-
-
-
-`2025-04-12`
-
-蓝牙命令cs inv后颜色不切换的原因找到了：taskLedsColorShiftGradient中与taskLedsColorShift中使用里同一种标志变量做switch判断
-
-修改：taskLedsColorShiftGradient常开
-
-
-
-【问题】
-
-- taskEyesUpdate与taskEyesBlink leds_l、leds_r的赋值有冲突，导致眨眼睛会闪（关闭眼睛渐变后十分明显） 如何协调这两个线程？
-- 上面的解释图中taskLedsColorShift的解释有误
-  - 需要重新整理现在的taskLedsColorShift与taskLedsColorShiftGradient的逻辑
-
-- 偶尔突然闪一下，亮度特别高？
-
-
-
-`2025-06-28`
-
-![image-20250628222312532](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250628222312532.png)
-
-
-
-
-
-`2025-06-29`
-
-功能更新ideas
-
-- 增加蓝牙指令功能：控制颜色切换时间  ✓
-- 增加功能：语音唤醒成功会眨眼  ✓
-- 增加亮度时变的呼吸灯效果
-  - 语音指令：控制开关
-  - 蓝牙指令：控制开关、切换速度
-
-
-
-`2025-07-02`
-
-增加亮度时变的呼吸灯效果✓
-
-增加蓝牙控制指令：
-
-- 控制呼吸灯效果开关、速度
-
-
-
-`2025-07-19`
-
-蓝牙&语音控制指令测试
