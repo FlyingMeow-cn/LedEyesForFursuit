@@ -32,23 +32,32 @@
 1. **冷光片方案：**使用可裁剪的冷光片剪出眼睛虹膜需要的形状，通电即发光。如[@AlZnCuLXT-Leo](https://space.bilibili.com/453770685)制作的发光眼炫酷小狼（下图①②）和[@是沐笙哦](https://space.bilibili.com/88811434)制作的恶魔猫猫[@坏猫咪Noct](https://space.bilibili.com/436821741)（下图③），均采用此种方法，①图所在视频有分享制作方式。这种方案优点在于制作简单，但通常无法改变亮度及颜色。![image-20250731132842081](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250731132842081.png)
    
    > ① [你好，我又来发帅帅的兽装发光眼制作方法分享了，冷光片版本~_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1t8RRYVEWB/)
-   >② [【兽装掉落展示】发光眼炫酷小狼半成品꒰ *•ɷ•* ꒱_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1z9dhYYELH/)
+   >
+   > ② [【兽装掉落展示】发光眼炫酷小狼半成品꒰ *•ɷ•* ꒱_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1z9dhYYELH/)
+   >
    > ③ [坏猫咪Noct的动态 - 哔哩哔哩](https://www.bilibili.com/opus/901174724123426819)
    
 2. **遥控灯带方案：**使用市面上可以直接买到的成品遥控灯带制作发光眼。如[@荒糖乐园](https://space.bilibili.com/386197384)制作的角色（下图①）,可以使用遥控器控制灯带开关及调整亮度；[@梓申_耶加Yirga](https://space.bilibili.com/10738663)进一步使用遥控灯带制作了一款通用的发光眼模块（下图②），可以直接贴在兽头眼睛内侧，对于已经做好兽装但想要加发光眼的毛毛是很好的选择；成品的遥控灯带在某宝有售（下图③）。这种方案优点在于制作简单、且可以根据遥控器或手机APP设定改变发光眼颜色及亮度，但动态效果比较单一，而且使用遥控器的按键操作方式对单人出毛不是很友好，通常需要有陪同来操作。[@Real_Even_](https://space.bilibili.com/824087)与[@是沐笙哦](https://space.bilibili.com/88811434)制作的发光眼兽装结合手机端的语音识别功能实现了对发光眼的语音控制（下图④），推测也是类似于使用遥控灯带的方案。![image-20250731141416818](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250731141416818.png)
 
    > ① [【兽装制作】【收录角色：06】PartA:兽装发光眼睛__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV15Q4y1C7fj/)
+   >
    > ② [发光眼定制方式&使用教程__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1oN41187zT/?vd_source=3d0e286d695b61ee17471629138cb89e)
+   >
    > ④ [兽装贾维斯，解放双手，无需陪同_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XDiyYVE8X/)
 
 3. **MCU+可编程灯珠方案：**使用微处理器(MCU)和可编程控制的RGB三色LED灯制作发光眼。如[@F-350](https://space.bilibili.com/478983938)制作的发光眼（下图①），包括一个控制主板和一个交互终端（均使用ESP32-WROOM单片机），可以实现颜色切换功能和眨眼等动态效果；[@榊原结衣-](https://space.bilibili.com/3072475)也实现了类似的发光眼（下图②），可由APP操控切换颜色并实现一些动态效果。我认为目前发光眼实现效果最好、最成熟的方案是由[@硅核](https://space.bilibili.com/489787289)设计的可编程发光眼（下图③④），可以通过配套的发光眼编辑器_Corona Studio_自定义设置动态效果（下图⑤），同时也设计了相应的语音控制方案（下图⑥）。这种方案优点在于定制化程度高，可由MCU实时控制各个灯珠的RGB颜色，从而实现各种各样的动态效果，同时结合MCU的外设接口可以实现多种交互方式；缺点在于定制化过程复杂、制作门槛高，目前还没有较为成熟的开源方案。
    ![image-20250731150719643](https://gitee.com/FlyingMeow/mypic/raw/master/image-20250731150719643.png)
 
    > ① [兽装发光眼＆内置风扇介绍__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1nPFceFE2c/?spm_id_from=333.337.search-card.all.click&vd_source=3d0e286d695b61ee17471629138cb89e)
+   >
    > ② [今年最后的一个委托 是个伪全 可以app操控换色的发光眼 直视我的眼睛！！_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1gC6JY2Ez7/?spm_id_from=333.337.search-card.all.click&vd_source=3d0e286d695b61ee17471629138cb89e)
+   >
    > ③ [【兽装】可以眨眼的兽装！陨石边牧掉落展示__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1MT411X7Hb/)
+   >
    > ④ [故障效果__哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1SN4y1d7fy)
+   >
    > ⑤ [【兽装】发光眼编辑器Corona Studio使用教程_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1iP4y1T7dP/)
+   >
    > ⑥ [你好，VIR。_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV12o4y1J7uq)
 
 本项目使用**MCU+可编程灯珠方案**，MCU使用ESP32-WROOM-32E，可编程灯珠使用WS2812B，同时使用ASRPRO模组进行语音指令识别。希望可以为有兴趣自制发光眼的毛毛们提供一些参考！
