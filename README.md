@@ -64,7 +64,7 @@
 项目开源内容包括：
 
 - 发光眼主控板及灯板的PCB设计（使用立创EDA专业版设计）👉 [OSHWHub开源工程]()
-- 发光眼外壳的结构设计工程及模型文件（使用Solidworks设计）👉 [MakerWorld开源工程]()
+- 发光眼外壳的结构设计工程及模型文件（使用Solidworks设计）👉 [MakerWorld开源工程](https://makerworld.com.cn/zh/models/1487259-shou-zhuang-dian-zi-fa-guang-yan-wai-ke)
 - 发光眼的ESP32固件程序源码（使用VScode PlatformIO开发框架）
 - ASRPRO语音识别程序的`.hd`文件（使用ASRPRO开发工具天问Bolck），在`/tianwenblock`文件夹下
 
