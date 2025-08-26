@@ -16,12 +16,6 @@ String ble_helpmsg = "";
 
 bool led_B_tigger = false;
 
-// 不需要的修改测试
-// 不需要的修改测试
-// 不需要的修改测试
-// 不需要的修改测试
-// 不需要的修改测试
-// 不需要的修改测试
 
 void setup()
 {
