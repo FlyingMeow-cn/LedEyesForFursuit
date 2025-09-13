@@ -36,7 +36,7 @@ void setup()
     xTaskCreate(taskLedsBriCtrl,            "taskLedsBriCtrl",              1024, &ledEyes, 1, NULL);
     xTaskCreate(taskLedsBriBreathe,         "taskLedsBriBreathe",           1024, &ledEyes, 1, NULL);
 
-    xTaskCreate(taskEyesBlink,              "taskEyesBlink",                1024, &ledEyes, 2, NULL);
+    xTaskCreate(taskEyesBlink,              "taskEyesBlink",                4096, &ledEyes, 2, NULL);
     xTaskCreate(taskEyesBlinkTrigger,       "taskEyesBlinkTrigger",         1024, &ledEyes, 4, NULL);
 
     // 创建LED蓝色指示灯任务 用于指示语音识别唤醒状态
